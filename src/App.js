@@ -1,25 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { AppWrapper } from './styles';
+import TimeLine from './TimeLine/TimeLine';
+import DnDFlow from './TimeLine/DnDFlow';
+import Sidebar from './TimeLine/SideBar';
+import 'react-flow-renderer/dist/style.css';
+import 'react-flow-renderer/dist/theme-default.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+
+
+
+  return <AppWrapper>
+    <DnDFlow />
+
+    <Sidebar />
+
+    <TimeLine />
+  </AppWrapper>
 }
 
 export default App;
