@@ -1,5 +1,20 @@
 import React, { useState } from 'react'
 import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
+import { TimeLineWrapper } from '../styles';
+import { AddNode, addNode } from '../Components/AddNode'
+
+
+// let event = {
+//   time: [year, month, day, hour, ],
+//   location: [x,y, title],
+//   people: [...characters],
+//   description: 'events',
+//   source: 'source',
+//   outcomes: 'targets'
+// }
+
+
+
 
 const initialElements = [
   {
@@ -21,16 +36,33 @@ const TimeLine = () => {
     setElements((els) => removeElements(elementsToRemove, els));
   const onConnect = (params) => setElements((els) => addEdge(params, els));
 
-  return (
-    <div style={{ height: 300 }}>
-      <ReactFlow
-        elements={elements}
-        onElementsRemove={onElementsRemove}
-        onConnect={onConnect}
-        deleteKeyCode={46} /* 'delete'-key */
-      />
-    </div>
-  );
+  const addNode = (e) => {
+    console.log(elements)
+
+    const newNode = {
+      id: elements.length + 1,
+      // type: 'input',
+      data: { label: 'Input Node' },
+      position: { x: (100 * Math.random()), y: (100 * Math.random()) },
+      targetPosition: 'left',
+      sourcePosition: 'right'
+
+    }
+    AddNode(e, (()=>console.log('parameter')))
+    setElements(prevList =>[ ...prevList, newNode ])
+  }
+
+
+return <TimeLineWrapper>
+  <button onClick={addNode}>Add Node</button>
+
+  <ReactFlow
+    elements={elements}
+    onElementsRemove={onElementsRemove}
+    onConnect={onConnect}
+    deleteKeyCode={46} /* 'delete'-key */
+  />
+</TimeLineWrapper>
 }
 
 export default TimeLine

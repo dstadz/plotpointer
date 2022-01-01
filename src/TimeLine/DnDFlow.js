@@ -61,7 +61,7 @@ const DnDFlow = () => {
   };
 
   return (
-    <div className="dndflow">
+    <div className="dndflow" style={{border:'1px solid black'}}>
       <ReactFlowProvider>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
