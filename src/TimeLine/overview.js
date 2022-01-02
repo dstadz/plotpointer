@@ -8,7 +8,7 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 
-import initialElements from './initial-elements';
+import initialElements from '../Components/Nodes/initial-elements';
 
 const onLoad = (reactFlowInstance) => {
   console.log('flow loaded:', reactFlowInstance);
