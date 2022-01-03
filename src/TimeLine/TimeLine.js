@@ -1,11 +1,20 @@
-import React, { useState } from 'react'
+import {useState, useEffect} from 'react'
+import {collection, query, orderBy, onSnapshot} from "firebase/firestore"
+import {db} from '../utils/firebase'
 import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
 import { TimeLineWrapper } from '../styles';
-import { AddNode, addNode } from '../Components/AddNode'
+import { addToFirebase } from '../utils/firebase'
 
+
+    // id: elements.length,
+    // type: 'input',//'output', 'default'
+    // data: content,// { label: 'Input Node' },
+    // position: location, //{ x: 250, y: 25 },
+    // targetPosition: 'left',
+    // sourcePosition: 'right'
 
 // let event = {
-//   time: [year, month, day, hour, ],
+  //   time: [year, month, day, hour, ],
 //   location: [x,y, title],
 //   people: [...characters],
 //   description: 'events',
@@ -30,39 +39,76 @@ const initialElements = [
   },
 ];
 
+
+
+
+
+
+
+
 const TimeLine = () => {
-  const [elements, setElements] = useState(initialElements);
+  const [elements, setElements] = useState([]);
+  const [isAddFormUp, setAddFormUp] = useState(!false);
+
+  /* function to get all tasks from firestore in realtime */
+  useEffect(() => {
+    const q = query(collection(db, 'nodes'), orderBy('created', 'desc'))
+    onSnapshot(q, (querySnapshot) => {
+      setElements(querySnapshot.docs.map((doc) => doc.data()))
+    })
+
+  },[])
+
+
+
+
+
+
+  const onConnect = (params) => {
+    console.log({params})
+    setElements((els) =>{
+      const edge = addEdge(params, els)
+      console.log(els)
+      return edge
+    })};
+
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
-  const onConnect = (params) => setElements((els) => addEdge(params, els));
 
-  const addNode = (e) => {
+
+  const toggleAddForm = () => {
     console.log(elements)
+    // setAddFormUp(wasUp => !wasUp)
 
-    const newNode = {
-      id: elements.length + 1,
-      // type: 'input',
-      data: { label: 'Input Node' },
-      position: { x: (100 * Math.random()), y: (100 * Math.random()) },
-      targetPosition: 'left',
-      sourcePosition: 'right'
-
-    }
-    AddNode(e, (()=>console.log('parameter')))
-    setElements(prevList =>[ ...prevList, newNode ])
   }
 
 
-return <TimeLineWrapper>
-  <button onClick={addNode}>Add Node</button>
+  const handleaddToFirebaseFormSubmit = (e, values) => {
+    e.preventDefault()
+    console.log(values, e)
 
-  <ReactFlow
-    elements={elements}
-    onElementsRemove={onElementsRemove}
-    onConnect={onConnect}
-    deleteKeyCode={46} /* 'delete'-key */
-  />
+    addToFirebase(e, (()=>console.log('parameter')))
+
+  }
+
+return <>
+  <button onClick={toggleAddForm}>Add Node</button>
+  <button onClick={toggleAddForm}>Fetch Nodes</button>
+
+  {isAddFormUp && <form onSubmit={handleaddToFirebaseFormSubmit}>
+    <input type="text" placeholder='content' />
+    <input type="submit"/>
+  </form>}
+<TimeLineWrapper>
+
+    <ReactFlow
+      elements={elements}
+      onElementsRemove={onElementsRemove}
+      onConnect={onConnect}
+      deleteKeyCode={46} /* 'delete'-key */
+    />
 </TimeLineWrapper>
+</>
 }
 
 export default TimeLine

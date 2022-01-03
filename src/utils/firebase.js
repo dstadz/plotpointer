@@ -2,6 +2,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"
 
+import {collection, addDoc, Timestamp} from 'firebase/firestore'
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,6 +21,51 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+export const db = getFirestore(app)
 
-export {db}
+
+
+/* function to add new task to firestore */
+export const addToFirebase = async (e, collectionId, onClose, content) => {
+  // const { id, name, description, position, data } = content
+  e.preventDefault()
+  try {
+    console.log('adding...')
+    await addDoc(collection(db, collectionId ), {
+      created: Timestamp.now(),
+      // id: id,
+      // data: data,
+      // position: position,
+      ...content
+    })
+    onClose()
+  } catch (err) {
+    alert(err)
+  }
+}
+
+
+export const deleteFromFirebase = async (collectionId, contentId) => {
+  const taskDocRef = doc(db, collectionId, contentId)
+  try{
+    console.log('deleting...')
+
+    await deleteDoc(taskDocRef)
+  } catch (err) {
+    alert(err)
+  }
+}
+
+
+export const updateFirebase = async  (collectionId, contentId, content)  => {
+  // e.preventDefault()
+  const idDocRef = doc(db, collectionId, contentId)
+  console.log(idDocRef)
+  try{
+    console.log('updating...')
+    await updateDoc(idDocRef, content)
+    // postTryFunc()
+  } catch (err) {
+    alert(err)
+  }
+}
