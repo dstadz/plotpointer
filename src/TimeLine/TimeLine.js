@@ -25,24 +25,6 @@ import { addToFirebase } from '../utils/firebase'
 
 
 
-const initialElements = [
-  {
-    id: '1',
-    type: 'input',
-    data: { label: 'Input Node' },
-    position: { x: 250, y: 25 },
-  },
-  {
-    id: '2',
-    data: { label: 'Another Node' },
-    position: { x: 100, y: 125 },
-  },
-];
-
-
-
-
-
 
 
 
@@ -52,11 +34,15 @@ const TimeLine = () => {
 
   /* function to get all tasks from firestore in realtime */
   useEffect(() => {
-    const q = query(collection(db, 'nodes'), orderBy('created', 'desc'))
-    onSnapshot(q, (querySnapshot) => {
-      setElements(querySnapshot.docs.map((doc) => doc.data()))
+    const nodeQ = query(collection(db, 'nodes'), orderBy('created', 'desc'))
+    onSnapshot(nodeQ, (querySnapshot) => {
+      setElements(prepEl => querySnapshot.docs.map((doc) => doc.data()))
     })
 
+    const edgeQ = query(collection(db, 'edges'), orderBy('created', 'desc'))
+    onSnapshot(edgeQ, (querySnapshot) => {
+      setElements(querySnapshot.docs.map((doc) => doc.data()))
+    })
   },[])
 
 
@@ -65,10 +51,13 @@ const TimeLine = () => {
 
 
   const onConnect = (params) => {
-    console.log({params})
-    setElements((els) =>{
+    console.log(params)
+    setElements((els) => {
       const edge = addEdge(params, els)
-      console.log(els)
+      console.log(edge[-1], edge)
+
+
+      addToFirebase('edges', edge[-1] )
       return edge
     })};
 

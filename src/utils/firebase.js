@@ -26,22 +26,23 @@ export const db = getFirestore(app)
 
 
 /* function to add new task to firestore */
-export const addToFirebase = async (e, collectionId, onClose, content) => {
+export const addToFirebase = async (
+  // e,
+  collectionId,
+  content,
+  //onClose callback
+  ) => {
   // const { id, name, description, position, data } = content
-  e.preventDefault()
+  // e.preventDefault()
   try {
     console.log('adding...')
     await addDoc(collection(db, collectionId ), {
       created: Timestamp.now(),
-      // id: id,
-      // data: data,
-      // position: position,
+
       ...content
     })
-    onClose()
-  } catch (err) {
-    alert(err)
-  }
+    // onClose()
+  } catch (err) { alert(err) }
 }
 
 
