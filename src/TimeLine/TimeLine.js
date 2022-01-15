@@ -29,29 +29,30 @@ import {  MiniMap, Controls } from 'react-flow-renderer';
 import { useMoveNode } from '../utils/hooks/useMoveNode'
 
 const TimeLine = () => {
-const [elements, setElements] = useState([]);
-const [nodeValues, nodeLoading, nodeError] = useCollectionData( query(collection(db, 'nodes')) )
-const [edgeValues, edgeLoading, edgeError] = useCollectionData( query(collection(db, 'edges')) )
+  const [elements, setElements] = useState([]);
+  const { logNode } = useMoveNode()
+  const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
+  const [edgeValues, edgeLoading, edgeError] = useCollection( query(collection(db, 'edges')) )
+  const onNodeDragStart = (event, node) => {}//console.log('drag start', node);
+  const onNodeDragStop = (event, node) =>{
+    // console.log('drag stop', node)
+    logNode(node)
+  };
+  const onElementClick = (event, element) => console.log('click', element);
+
 useEffect(() => {
 if (nodeError) {console.error(nodeError)}
 if (edgeError) {console.error(edgeError)}
 if (nodeValues && edgeValues) {
-  console.log(nodeValues, edgeValues)
-  setElements([...nodeValues, ...edgeValues]) }
-}, [nodeLoading, edgeLoading])
+  console.log(query(collection(db, 'nodes')))
+  setElements([...nodeValues, ...edgeValues])
 
-const { logNode } = useMoveNode()
+}
+}, [nodeLoading, edgeLoading])
 
 const [value, setValue] = useState('')
 
 
-const onNodeDragStart = (event, node) => console.log('drag start', node);
-const onNodeDragStop = (event, node) => console.log('drag stop', node);
-const onElementClick = (event, element) => console.log('click', element);
-const onPaneClick = (event) => console.log('onPaneClick', event);
-const onPaneScroll = (event) => console.log('onPaneScroll', event);
-const onPaneContextMenu = (event) => console.log('onPaneContextMenu', event);
-// const onLoad = (reactFlowInstance) => reactFlowInstance.fitView({ padding: 0.2 });
 
 const [isAddFormUp, setAddFormUp] = useState(!false);
 
@@ -84,17 +85,15 @@ console.log(` tickle state: ${elements}`, elements)
 
 const handleaddToFirebaseFormSubmit = () => {
 // e.preventDefault()
-console.log('handleaddToFirebaseFormSubmit')
-const newNode = {
-  data: { label: value },
-  position: {
-    x: Math.floor(Math.random()*100)+150,
-    y: Math.floor(Math.random()*100)+150
+  // console.log('handleaddToFirebaseFormSubmit')
+  const newNode = {
+    data: { label: value },
+    position: {
+      x: Math.floor(Math.random()*100)+150,
+      y: Math.floor(Math.random()*100)+150
+    }
   }
-}
-console.log(value, newNode)
-addToFirebase('nodes', newNode)
-
+  addToFirebase('nodes', newNode)
 }
 
 
@@ -103,18 +102,18 @@ setValue(e.target.value)
 }
 
 return <>
-<button onClick={toggleAddForm}>Add Node</button>
 <button onClick={toggleAddForm}>Fetch Nodes</button>
 <button onClick={tickleState}>tickle Nodes</button>
 
-{isAddFormUp && <form onSubmit={(e)=> {
+<form onSubmit={(e)=> {
 e.preventDefault();
 handleaddToFirebaseFormSubmit(value)
 }}>
 <input type="text" value={value} onChange={handleChange} />
 
 <input type="submit"/>
-</form>}
+</form>
+
 <TimeLineWrapper>
     <ReactFlow
       elements={elements}
@@ -128,7 +127,7 @@ handleaddToFirebaseFormSubmit(value)
       onConnect={onConnect}
       onElementClick={onElementClick}
       onNodeDragStart={onNodeDragStart}
-      onNodeDragStop={logNode}
+      onNodeDragStop={onNodeDragStop}
       // onLoad={onLoad}
     >
       <MiniMap />

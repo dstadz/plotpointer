@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"
 
 import {collection, addDoc, Timestamp} from 'firebase/firestore'
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,28 +23,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
 
-
-
 /* function to add new task to firestore */
 export const addToFirebase = async (
   collectionId,
   content,
-  //onClose // callback
-  ) => {
+) => {
   try {
     console.log('adding...', collectionId, content)
-    await addDoc(collection(db, collectionId ), {
-      id: uuidv4(),
+    const dataToStore = {
       ...content,
       created: Timestamp.now(),
-
-    })
-    // onClose()
-  } catch (err) { alert(err) }
+    }
+    const newDocThing = await addDoc(collection(db, collectionId ), dataToStore)
+    const latestNodeRef = doc(db, collectionId, newDocThing.id)
+    updateDoc(latestNodeRef,{ id:newDocThing.id})
+  } catch (err) { console.log(err) }
 }
 
-
-export const deleteFromFirebase = async (collectionId, contentId) => {
+export const deleteFromFirebase = async (
+  collectionId,
+  contentId
+) => {
   const taskDocRef = doc(db, collectionId, contentId)
   try{
     console.log('deleting...')
@@ -55,16 +54,11 @@ export const deleteFromFirebase = async (collectionId, contentId) => {
   }
 }
 
-
-export const updateFirebase = async  (collectionId, contentId, content)  => {
-  // e.preventDefault()
-  const idDocRef = doc(db, collectionId, contentId)
-  console.log(idDocRef)
-  try{
-    console.log('updating...')
-    await updateDoc(idDocRef, content)
-    // postTryFunc()
-  } catch (err) {
-    alert(err)
-  }
+export const updateFirebase = async (
+  collectionId,
+  contentId,
+  content
+) => {
+  const elementRef = doc(db, collectionId, contentId)
+  await updateDoc(elementRef, content)
 }
