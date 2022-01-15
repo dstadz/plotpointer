@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore"
 
 import {collection, addDoc, Timestamp} from 'firebase/firestore'
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-
+import { v4 as uuidv4 } from 'uuid';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,19 +27,17 @@ export const db = getFirestore(app)
 
 /* function to add new task to firestore */
 export const addToFirebase = async (
-  // e,
   collectionId,
   content,
-  //onClose callback
+  //onClose // callback
   ) => {
-  // const { id, name, description, position, data } = content
-  // e.preventDefault()
   try {
-    console.log('adding...')
+    console.log('adding...', collectionId, content)
     await addDoc(collection(db, collectionId ), {
+      id: uuidv4(),
+      ...content,
       created: Timestamp.now(),
 
-      ...content
     })
     // onClose()
   } catch (err) { alert(err) }
