@@ -32,7 +32,7 @@ const TimeLine = () => {
   const [elements, setElements] = useState([]);
   const { logNode } = useMoveNode()
   const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
-  const [edgeValues, edgeLoading, edgeError] = useCollection( query(collection(db, 'edges')) )
+  const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
   const onNodeDragStart = (event, node) => {}//console.log('drag start', node);
   const onNodeDragStop = (event, node) =>{
     // console.log('drag stop', node)

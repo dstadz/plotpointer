@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 
 import {updateFirebase } from '../firebase'
-export const useMoveNode = (node) => {
+export const useMoveNode = () => {
 
-  const logNode = (_, node) => {
+  const logNode = (node) => {
     console.log('log node', node)
 
     updateFirebase('nodes', node.id, node)
