@@ -40,21 +40,16 @@ const TimeLine = () => {
   };
   const onElementClick = (event, element) => console.log('click', element);
 
-useEffect(() => {
-if (nodeError) {console.error(nodeError)}
-if (edgeError) {console.error(edgeError)}
-if (nodeValues && edgeValues) {
-  console.log(query(collection(db, 'nodes')))
-  setElements([...nodeValues, ...edgeValues])
-
-}
-}, [nodeLoading, edgeLoading])
+  useEffect(() => {
+    if (nodeError) {console.error(nodeError)}
+    if (edgeError) {console.error(edgeError)}
+    if (nodeValues && edgeValues) {setElements([...nodeValues, ...edgeValues])}
+  }, [nodeLoading, edgeLoading])
 
 const [value, setValue] = useState('')
 
 
 
-const [isAddFormUp, setAddFormUp] = useState(!false);
 
 
 const onConnect = (params) => {
@@ -73,17 +68,12 @@ const onElementsRemove = (elementsToRemove) =>{
 setElements((els) => removeElements(elementsToRemove, els));
 }
 
-const toggleAddForm = () => {
-// console.log(elements)
-setAddFormUp(wasUp => !wasUp)
-
-}
 
 const tickleState = () => {
 console.log(` tickle state: ${elements}`, elements)
 }
 
-const handleaddToFirebaseFormSubmit = () => {
+const handleaddToFirebaseFormSubmit = async () => {
 // e.preventDefault()
   // console.log('handleaddToFirebaseFormSubmit')
   const newNode = {
@@ -93,7 +83,9 @@ const handleaddToFirebaseFormSubmit = () => {
       y: Math.floor(Math.random()*100)+150
     }
   }
-  addToFirebase('nodes', newNode)
+  const newNodeId = await addToFirebase('nodes', newNode)
+  console.log(newNodeId)
+  setElements((els) =>([...els, {...newNode, id: newNodeId}]))
 }
 
 
@@ -102,7 +94,6 @@ setValue(e.target.value)
 }
 
 return <>
-<button onClick={toggleAddForm}>Fetch Nodes</button>
 <button onClick={tickleState}>tickle Nodes</button>
 
 <form onSubmit={(e)=> {
