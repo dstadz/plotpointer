@@ -8,7 +8,50 @@ import { useCollectionData, useCollection } from 'react-firebase-hooks/firestore
 
 
 
-import {  MiniMap, Controls } from 'react-flow-renderer';
+import { MiniMap, Controls } from 'react-flow-renderer';
+import { useRecoilValue } from 'recoil';
+
+import { useNode } from '../utils/hooks/useNode'
+import EventNode from './EventNode'
+import { elementsState } from '../utils/store';
+
+const TimeLine = () => {
+  const { updateNode, onConnect } = useNode()
+  const elements = useRecoilValue(elementsState)
+  const onNodeDragStop = (event, node) => { updateNode(node) }
+
+  const onElementClick = (event, element) => console.log('click', element);
+
+
+
+
+
+    const nodeTypes = {
+      eventNode: EventNode,
+    };
+
+return (
+<TimeLineWrapper id='timeline'>
+  <ReactFlow
+    nodeTypes={nodeTypes}
+    elements={elements}
+    elementsSelectable={true}
+    nodesConnectable={true}
+    nodesDraggable={true}
+    zoomOnScroll={true}
+    zoomOnDoubleClick={true}
+    onConnect={onConnect}
+    onNodeDragStop={onNodeDragStop}
+    // onLoad={onLoad}
+  >
+    <MiniMap />
+    <Controls />
+  </ReactFlow>
+</TimeLineWrapper>
+)}
+
+export default TimeLine
+
 
 // id: elements.length,
 // type: 'input',//'output', 'default'
@@ -25,63 +68,3 @@ import {  MiniMap, Controls } from 'react-flow-renderer';
 //   source: 'source',
 //   outcomes: 'targets'
 // }
-
-import { useMoveNode } from '../utils/hooks/useMoveNode'
-import EventNode from './EventNode'
-
-const TimeLine = ({elements, setElements}) => {
-  const { logNode } = useMoveNode()
-
-  const onNodeDragStart = (event, node) => {}//console.log('drag start', node);
-  const onNodeDragStop = (event, node) =>{
-    // console.log('drag stop', node)
-    logNode(node)
-  };
-  const onElementClick = (event, element) => console.log('click', element);
-
-
-
-  const onConnect = (params) => {
-    console.log("edge parameters:", params)
-    setElements((els) => {
-      console.log('prevlist', els)
-      const edge = addEdge(params, els)
-      console.log(edge[-1], edge)
-
-
-      addToFirebase('edges', edge[edge.length - 1] )
-      return edge
-    })};
-
-    const nodeTypes = {
-      eventNode: EventNode,
-    };
-
-return (
-<TimeLineWrapper id='timeline'>
-  <ReactFlow
-     nodeTypes={nodeTypes}
-
-
-
-    elements={elements}
-    elementsSelectable={true}
-    nodesConnectable={true}
-    nodesDraggable={true}
-    zoomOnScroll={true}
-    panOnScroll={true}
-    panOnScrollMode={true}
-    zoomOnDoubleClick={true}
-    onConnect={onConnect}
-    onElementClick={onElementClick}
-    onNodeDragStart={onNodeDragStart}
-    onNodeDragStop={onNodeDragStop}
-    // onLoad={onLoad}
-  >
-    <MiniMap />
-    <Controls />
-  </ReactFlow>
-</TimeLineWrapper>
-)}
-
-export default TimeLine

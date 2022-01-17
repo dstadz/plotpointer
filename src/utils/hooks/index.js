@@ -1,1 +1,1 @@
-export { useMoveNode } from './useModeNode'
+export { useNode } from './useModeNode'

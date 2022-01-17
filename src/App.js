@@ -6,22 +6,20 @@ import DnDFlow from './TimeLine/DnDFlow';
 import Sidebar from './TimeLine/SideBar';
 import 'react-flow-renderer/dist/style.css';
 import 'react-flow-renderer/dist/theme-default.css';
-import OverviewFlow from './TimeLine/overview';
 
 import {useState, useEffect} from 'react'
-import {collection, query, orderBy, onSnapshot} from "firebase/firestore"
+import {collection, query } from "firebase/firestore"
 import {db} from './utils/firebase'
 import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
-import { TimeLineWrapper } from './styles';
 import { addToFirebase } from './utils/firebase'
-import { useCollectionData, useCollection } from 'react-firebase-hooks/firestore';
-import { useMoveNode } from './utils/hooks/useMoveNode'
-import CustomNodeFlow from './TimeLine/CustomNodeFlow';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useNode } from './utils/hooks/useNode'
+import { elementsState } from './utils/store'
+import { useSetRecoilState } from 'recoil';
 
 
 const App = () => {
-  const [elements, setElements] = useState([]);
-  const { logNode } = useMoveNode()
+  const  setElements = useSetRecoilState(elementsState);
   const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
   const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
 
@@ -33,18 +31,12 @@ const App = () => {
       setElements([...nodeValues, ...edgeValues])
     }
   }, [nodeLoading, edgeLoading])
-
 const [value, setValue] = useState('')
 
 
 
 const onElementsRemove = (elementsToRemove) =>{
 setElements((els) => removeElements(elementsToRemove, els));
-}
-
-
-const tickleState = () => {
-console.log(` tickle state:`, elements)
 }
 
 const handleaddToFirebaseFormSubmit = async () => {
@@ -69,25 +61,20 @@ const handleaddToFirebaseFormSubmit = async () => {
     setValue(e.target.value)
     }
 
-  return <AppWrapper>
-  <button onClick={tickleState}>tickle Nodes</button>
+return <AppWrapper>
 
-<form onSubmit={(e)=> {
-e.preventDefault();
-handleaddToFirebaseFormSubmit(value)
-}}>
-<input type="text" value={value} onChange={handleChange} />
+  <form onSubmit={(e)=> {
+  e.preventDefault();
+  handleaddToFirebaseFormSubmit(value)
+  }}>
+  <input type="text" value={value} onChange={handleChange} />
 
-<input type="submit"/>
-</form>
+  <input type="submit"/>
+  </form>
 
-    <TimeLine
-      elements={elements}
-      setElements={setElements}
-    />
+  <TimeLine />
 
-    {/* <CustomNodeFlow /> */}
-  </AppWrapper>
+</AppWrapper>
 }
 
 export default App;
