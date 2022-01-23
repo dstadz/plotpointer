@@ -1,21 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react'
 import { AppWrapper } from './styles';
 import TimeLine from './TimeLine/TimeLine';
-import DnDFlow from './TimeLine/DnDFlow';
-import Sidebar from './TimeLine/SideBar';
-import 'react-flow-renderer/dist/style.css';
-import 'react-flow-renderer/dist/theme-default.css';
-
-import {useState, useEffect} from 'react'
 import {collection, query } from "firebase/firestore"
 import {db} from './utils/firebase'
 import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
 import { addToFirebase } from './utils/firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { useNode } from './utils/hooks/useNode'
 import { elementsState } from './utils/store'
 import { useSetRecoilState } from 'recoil';
+import './App.css';
+import 'react-flow-renderer/dist/style.css';
+import 'react-flow-renderer/dist/theme-default.css';
 
 
 const App = () => {
@@ -31,7 +26,8 @@ const App = () => {
       setElements([...nodeValues, ...edgeValues])
     }
   }, [nodeLoading, edgeLoading])
-const [value, setValue] = useState('')
+
+  const [value, setValue] = useState('')
 
 
 
@@ -43,15 +39,16 @@ const handleaddToFirebaseFormSubmit = async () => {
 // e.preventDefault()
   // console.log('handleaddToFirebaseFormSubmit')
   const newNode = {
-    data: { label: value },
     type: 'eventNode',
     position: {
       x: Math.floor(Math.random()*100)+150,
       y: Math.floor(Math.random()*100)+150
-    }
+    },
+    data: {
+      label: value
+    },
   }
   const newNodeId = await addToFirebase('nodes', newNode)
-  console.log(newNodeId)
   setElements((els) =>([...els, {...newNode, id: newNodeId}]))
 }
 

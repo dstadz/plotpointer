@@ -1,10 +1,14 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState } from 'react'
+import { Handle } from 'react-flow-renderer'
+import Emoji from '../misc/Emoji'
+import { EventNodeWrapper } from '../../TimeLine/styles'
+import { useRecoilValue } from 'recoil'
+import { ActiveNodeState, elementsState } from '../../utils/store'
+import { useNodeHook } from '../../utils/hooks'
 
-import { Handle } from 'react-flow-renderer';
-import Emoji from '../utils/misc/Emoji';
-import { EventNodeWrapper } from './styles';
-
-export default memo(({ data, isConnectable }) => {
+export default memo(({ id, data, isConnectable }) => {
+  const activeNode = useRecoilValue(ActiveNodeState)
+  const { updateNode, setAttribute } = useNodeHook()
   const [value, setValue] =useState('')
 
   const [isEditing, setEditing] = useState(false)
@@ -20,7 +24,17 @@ export default memo(({ data, isConnectable }) => {
     }
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(data.label == value)
+    // console.log(value)
+    const isDifferent = data.label !== value
+    if (isDifferent) {
+        const freshNode = {
+          ...activeNode,
+          data: {"label": value},
+        }
+      // console.log('freshNode', {activeNode}, freshNode);
+      updateNode(freshNode)
+      setAttribute('label', value)
+    }
 
     setEditing(false)
   }

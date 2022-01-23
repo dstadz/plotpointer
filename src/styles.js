@@ -8,7 +8,8 @@ background: hsla(240, 20%, 20%, .9);
 
 export const TimeLineWrapper = styled.div`
   border: 2px solid grey;
-  background: hsla(120, 20%, 80%, .9);
+  background: hsla(120, 20%, 20%, .9);
   width:100%;
-  height: 800px; /*calc(100%);*/
+  height: 975px;
+  ${'' /* height: calc(100% - 2px); */}
 `
