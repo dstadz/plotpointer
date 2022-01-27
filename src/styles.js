@@ -3,6 +3,10 @@ import styled from 'styled-components'
 
 export const AppWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
 
   background: hsla(240, 20%, 20%, .9);
 `
