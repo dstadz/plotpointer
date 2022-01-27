@@ -8,6 +8,7 @@ import { isEditingState, elementsState, ActiveNodeState } from '../utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from './misc/Emoji';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
+import { EditNodeFormWrapper } from './EditNodeForm';
 
 
 
@@ -63,6 +64,14 @@ const onElementsRemove = (elementsToRemove) =>{
     const updatedNode = {...activeNode, data : { label: editValue}}
     console.log(updatedNode)
     updateNode(updatedNode)
+    setElements((els) => els.map((el) => {
+      // console.log(el)
+      if (el.id == activeNode.id) {
+        console.log('node to be edited', activeNode.id)
+        return updatedNode}
+      return el;
+    })
+  );
   }
 
   // console.log(activeNode)
@@ -70,17 +79,17 @@ return <div>
 
   <div>
     <form >
-      <input type="textarea" value={addValue} rows="5" cols="33" onChange={handleAddChange} />
+      <textarea value={addValue} rows="5" cols="33" onChange={handleAddChange} />
       <button onClick={handleAddSubmit}>Add New Node<Emoji e={'✅'}/></button>
     </form>
   </div>
 
-  {isEditing && <div>
-    <form >
-      <input type="textarea" value={editValue} rows="5" cols="33" onChange={handleEditChange} />
-      <button onClick={handleEditSubmit}>Submit Edit<Emoji e={'✅'}/></button>
+  {isEditing && <EditNodeFormWrapper>
+    <form onSubmit={handleEditSubmit}>
+      <textarea value={editValue} rows="5" cols="33" onChange={handleEditChange} />
+      <button type='submit'>Submit Edit<Emoji e={'✅'}/></button>
     </form>
-  </div>}
+  </EditNodeFormWrapper>}
 
 
 </div>;

@@ -21,19 +21,12 @@ const TimeLine = () => {
   }, [nodeLoading, edgeLoading])
 
   const { updateNode, onConnect } = useNodeHook()
+  const onNodeDragStop = (_, node) => { updateNode(node) }
+
   const setActiveNode = useSetRecoilState(ActiveNodeState)
-  const onNodeDragStop = (event, node) => { updateNode(node) }
+  const onElementClickHandler = (_, element) => {setActiveNode(element)}
 
-  const onElementClickHandler = (_, element) => {
-    // console.log('element', element);
-    setActiveNode(element)
-  };
-
-  const nodeTypes = {
-    eventNode: EventNode,
-  };
-
-
+  const nodeTypes = {eventNode: EventNode,}
 
 return <TimeLineWrapper id='timeline'>
   <ReactFlow

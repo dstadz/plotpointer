@@ -14,9 +14,8 @@ export const useNodeHook = () => {
   const [newKeyVal, setKeyVal] = useState({});
 
   const setAttribute = (field, value) => {
-    console.log(field, value)
-    // setNewField(field)
-    // setNewValue(value)
+    // console.log(value.length)
+    // console.log(field, value)
     setKeyVal({[field]: value})
   }
 
@@ -30,17 +29,20 @@ export const useNodeHook = () => {
     const newEl = {...activeNode, data: {...newKeyVal}}
     console.log('newField:value, ', {activeNode}, {newEl})
     setElements((els) => els.map((el) => {
-        if (el.id == activeNode.id) return newEl
+        // console.log(el)
+        if (el.id == activeNode.id) {
+          // console.log('node to be edited', activeNode.id)
+          return newEl}
         return el;
       })
     );
-  }, [newKeyVal, setElements]);
+  }, [setElements]);
 
   const onConnect = (params) => {
     // console.log("edge parameters:", params)
     setElements((els) => {
       const edge = addEdge(params, els)
-      addToFirebase('edges', edge[edge.length - 1] )
+      addToFirebase('edges', edge[edge.length - 1])
       return edge
     })
   }
