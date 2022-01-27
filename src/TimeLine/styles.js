@@ -1,14 +1,22 @@
 import styled from 'styled-components'
 
 export const EventNodeWrapper = styled.div`
-
-  div.content {
+  .node {
     border: 1px solid black;
-    ${'' /* padding: 10px; */}
+    ${'' /* padding: 0 10px; */}
     background: white;
     border-radius: 5px;
     min-width:150px;
     text-align: center;
+
+    .inner-content{
+      padding: 0 10px;
+      max-width: 150px;
+
+      input{
+        white-space: wrap;
+      }
+    }
 
   }
 
@@ -21,6 +29,7 @@ export const EventNodeWrapper = styled.div`
 
   span {
     font-size: 12px;
+    line-height: 8px;
   }
 
 
@@ -29,5 +38,7 @@ export const EventNodeWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: calc(100%);
+
   }
 `

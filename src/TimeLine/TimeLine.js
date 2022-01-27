@@ -1,14 +1,26 @@
-import ReactFlow from 'react-flow-renderer';
+import {useEffect} from 'react'
 import { TimeLineWrapper } from '../styles';
 import { MiniMap, Controls } from 'react-flow-renderer';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
 import EventNode from '../Components/Nodes/EventNode'
 import { ActiveNodeState, elementsState } from '../utils/store';
 
+import {collection, query } from "firebase/firestore"
+import {db} from '../utils/firebase'
+import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
 const TimeLine = () => {
+  const [elements, setElements] = useRecoilState(elementsState)
+  const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
+  const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
+  useEffect(() => {
+    if (nodeError || edgeError) {console.error(nodeError, edgeError)}
+    if (nodeValues && edgeValues) {setElements([...nodeValues, ...edgeValues])}
+  }, [nodeLoading, edgeLoading])
+
   const { updateNode, onConnect } = useNodeHook()
-  const elements = useRecoilValue(elementsState)
   const setActiveNode = useSetRecoilState(ActiveNodeState)
   const onNodeDragStop = (event, node) => { updateNode(node) }
 
@@ -20,6 +32,8 @@ const TimeLine = () => {
   const nodeTypes = {
     eventNode: EventNode,
   };
+
+
 
 return <TimeLineWrapper id='timeline'>
   <ReactFlow

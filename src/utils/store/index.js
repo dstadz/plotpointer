@@ -10,6 +10,16 @@ export const ActiveNodeState = atom({
   default: {}
 })
 
+export const isEditingState = atom({
+  key: 'isEditingState',
+  default: false
+})
+
+// export const elementsState = atom({
+//   key: 'elementsState',
+//   default: []
+// })
+
 // export const elementsState = atom({
 //   key: 'elementsState',
 //   default: []

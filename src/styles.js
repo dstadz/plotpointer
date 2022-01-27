@@ -2,8 +2,9 @@ import styled from 'styled-components'
 
 
 export const AppWrapper = styled.div`
+  display: flex;
 
-background: hsla(240, 20%, 20%, .9);
+  background: hsla(240, 20%, 20%, .9);
 `
 
 export const TimeLineWrapper = styled.div`
