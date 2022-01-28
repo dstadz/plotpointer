@@ -55,10 +55,10 @@ return <div>
 
 
 
-    {elements.map(el => {
-      return el?.data?.label && <li>{el?.data?.label}</li>
+    {/* {elements.map(el => {
+      return el?.data?.label && <li key={el.id}>{el?.data?.label}</li>
 
-    })}
+    })} */}
 
   {/* <p className="description">
     You can drag these nodes to the pane on the right.
