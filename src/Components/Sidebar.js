@@ -7,52 +7,25 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { isEditingState, elementsState, ActiveNodeState } from '../utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from './misc/Emoji';
-import { useNodeHook } from '../utils/hooks/useNodeHook'
-import { EditNodeFormWrapper } from './styles';
-import { useRef } from 'react';
+import EditNodeForm from './EditNodeForm';
 
 
 
 const Sidebar = () => {
-  const [isEditing, setEditing] = useRecoilState(isEditingState)
-  const setElements = useSetRecoilState(elementsState);
-  const activeNode = useRecoilValue(ActiveNodeState);
+  const [elements, setElements] = useRecoilState(elementsState);
   const [addValue, setAddValue] = useState('')
-  const [editValue, setEditValue] = useState('')
 
-  const { updateNode, onConnect } = useNodeHook()
-
-  const editFormRef = useRef()
-  useEffect(() => {
-    if (isEditing) {
-      editFormRef.current.focus();
-    }
-  },[isEditing])
-
-
-const onElementsRemove = (elementsToRemove) =>{
-  setElements((els) => removeElements(elementsToRemove, els));
+  const onElementsRemove = (elementsToRemove) =>{
+    setElements((els) => removeElements(elementsToRemove, els));
   }
 
-
-  useEffect(() => {
-    if (isEditing) setEditValue(activeNode.data?.label || '' )
-  },[isEditing, activeNode])
-
   const handleAddChange = (e) => {
+    e.preventDefault()
     setAddValue(e.target.value)
     }
 
-
-
-  const handleEditChange = (e) => {
+    const handleAddSubmit = async (e) => {
     e.preventDefault()
-    setEditValue(e.target.value)
-  }
-
-
-  const handleAddSubmit = async () => {
-    // e.preventDefault()
       const newNode = {
         type: 'eventNode',
         position: { x: 150, y: 150 },
@@ -61,16 +34,8 @@ const onElementsRemove = (elementsToRemove) =>{
 
       const newNodeId = await addToFirebase('nodes', newNode)
       setElements((els) =>([...els, {...newNode, id: newNodeId}]))
+      setAddValue('')
     }
-
-  const handleEditSubmit = (e) => {
-    e.preventDefault()
-
-    const updatedNode = {...activeNode, data : { label: editValue}}
-    setElements((els) => els.map(el => el.id == activeNode.id ? updatedNode : el))
-    updateNode(updatedNode)
-    setEditing(false)
-  }
 
   // const onDragStart = (event, nodeType) => {
   //   event.dataTransfer.setData('application/reactflow', nodeType);
@@ -86,17 +51,14 @@ return <div>
     </form>
   </div>
 
-  {isEditing && <EditNodeFormWrapper>
-    <form onSubmit={handleEditSubmit}>
-      <textarea
-        value={editValue}
-        rows="5" cols="33"
-        onChange={handleEditChange}
-        ref={editFormRef}
-      />
-      <button type='submit'>Submit Edit<Emoji e={'✅'}/></button>
-    </form>
-  </EditNodeFormWrapper>}
+  <EditNodeForm />
+
+
+
+    {elements.map(el => {
+      return el?.data?.label && <li>{el?.data?.label}</li>
+
+    })}
 
   {/* <p className="description">
     You can drag these nodes to the pane on the right.
