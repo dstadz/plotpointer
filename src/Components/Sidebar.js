@@ -8,7 +8,8 @@ import { isEditingState, elementsState, ActiveNodeState } from '../utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from './misc/Emoji';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
-import { EditNodeFormWrapper } from './EditNodeForm';
+import { EditNodeFormWrapper } from './styles';
+import { useRef } from 'react';
 
 
 
@@ -21,6 +22,13 @@ const Sidebar = () => {
 
   const { updateNode, onConnect } = useNodeHook()
 
+  const editFormRef = useRef()
+  useEffect(() => {
+    if (isEditing) {
+      editFormRef.current.focus();
+    }
+  },[isEditing])
+
 
 const onElementsRemove = (elementsToRemove) =>{
   setElements((els) => removeElements(elementsToRemove, els));
@@ -28,8 +36,7 @@ const onElementsRemove = (elementsToRemove) =>{
 
 
   useEffect(() => {
-    console.log(activeNode)
-    if (isEditing) setEditValue(activeNode.data.label)
+    if (isEditing) setEditValue(activeNode.data?.label || '' )
   },[isEditing, activeNode])
 
   const handleAddChange = (e) => {
@@ -49,9 +56,7 @@ const onElementsRemove = (elementsToRemove) =>{
       const newNode = {
         type: 'eventNode',
         position: { x: 150, y: 150 },
-        data: {
-          label: addValue
-        },
+        data: { label: addValue },
       }
 
       const newNodeId = await addToFirebase('nodes', newNode)
@@ -62,18 +67,15 @@ const onElementsRemove = (elementsToRemove) =>{
     e.preventDefault()
 
     const updatedNode = {...activeNode, data : { label: editValue}}
-    console.log(updatedNode)
+    setElements((els) => els.map(el => el.id == activeNode.id ? updatedNode : el))
     updateNode(updatedNode)
-    setElements((els) => els.map((el) => {
-      // console.log(el)
-      if (el.id == activeNode.id) {
-        console.log('node to be edited', activeNode.id)
-        return updatedNode}
-      return el;
-    })
-  );
+    setEditing(false)
   }
 
+  // const onDragStart = (event, nodeType) => {
+  //   event.dataTransfer.setData('application/reactflow', nodeType);
+  //   event.dataTransfer.effectAllowed = 'move';
+  // };
   // console.log(activeNode)
 return <div>
 
@@ -86,12 +88,28 @@ return <div>
 
   {isEditing && <EditNodeFormWrapper>
     <form onSubmit={handleEditSubmit}>
-      <textarea value={editValue} rows="5" cols="33" onChange={handleEditChange} />
+      <textarea
+        value={editValue}
+        rows="5" cols="33"
+        onChange={handleEditChange}
+        ref={editFormRef}
+      />
       <button type='submit'>Submit Edit<Emoji e={'✅'}/></button>
     </form>
   </EditNodeFormWrapper>}
 
-
+  {/* <p className="description">
+    You can drag these nodes to the pane on the right.
+  </p>
+  <div className="eventNode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
+    Input Node
+  </div>
+  <div className="dndnode" onDragStart={(event) => onDragStart(event, 'default')} draggable>
+    Default Node
+  </div>
+  <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
+    Output Node
+  </div> */}
 </div>;
 };
 

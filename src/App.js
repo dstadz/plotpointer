@@ -12,6 +12,7 @@ const App = () => {
 
 return <AppWrapper>
 
+{/* <Map /> */}
     <Sidebar />
 
   <TimeLine />
