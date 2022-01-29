@@ -29,7 +29,7 @@ const TimeLine = () => {
   const nodeTypes = {eventNode: EventNode,}
 
 return <TimeLineWrapper id='timeline'>
-  <ReactFlow
+  <ReactFlow id='react-flow'
     nodeTypes={nodeTypes}
     elements={elements}
     elementsSelectable={true}
@@ -45,6 +45,10 @@ return <TimeLineWrapper id='timeline'>
   >
     <MiniMap />
     <Controls />
+
+    {/* <div style={{backgroundColor: 'red'}}>
+      another comp
+    </div> */}
 
     <Background
       variant="lines"

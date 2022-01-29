@@ -5,18 +5,11 @@ import 'react-flow-renderer/dist/style.css';
 import 'react-flow-renderer/dist/theme-default.css';
 import Sidebar from './Components/Sidebar';
 
-
 const App = () => {
 
-
-
-return <AppWrapper>
-
-{/* <Map /> */}
-    <Sidebar />
-
+return <AppWrapper id="app">
+  <Sidebar />
   <TimeLine />
-
 </AppWrapper>
 }
 
