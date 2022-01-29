@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import { TimeLineWrapper } from '../styles';
-import { MiniMap, Controls } from 'react-flow-renderer';
+import { Background, MiniMap, Controls } from 'react-flow-renderer';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
 import EventNode from '../Components/Nodes/EventNode'
@@ -12,6 +12,7 @@ import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const TimeLine = () => {
+  const setActiveNode = useSetRecoilState(ActiveNodeState)
   const [elements, setElements] = useRecoilState(elementsState)
   const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
   const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
@@ -23,7 +24,6 @@ const TimeLine = () => {
   const { updateNode, onConnect } = useNodeHook()
   const onNodeDragStop = (_, node) => { updateNode(node) }
 
-  const setActiveNode = useSetRecoilState(ActiveNodeState)
   const onElementClickHandler = (_, element) => {setActiveNode(element)}
 
   const nodeTypes = {eventNode: EventNode,}
@@ -40,9 +40,17 @@ return <TimeLineWrapper id='timeline'>
     onConnect={onConnect}
     onNodeDragStop={onNodeDragStop}
     onElementClick={onElementClickHandler}
+    // onEdgeContextMenu={onEdgeContextMenuHanlder}
+    // onNodeContextMenu={onNodeContextMenu}
   >
     <MiniMap />
     <Controls />
+
+    <Background
+      variant="lines"
+      gap={50}
+      size={.1}
+    />
   </ReactFlow>
 </TimeLineWrapper>
 }

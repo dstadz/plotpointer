@@ -8,38 +8,28 @@ import { ActiveNodeState, elementsState } from '../store'
 
 
 export const useNodeHook = () => {
-  const activeNode = useRecoilValue(ActiveNodeState)
-
-  const [elements, setElements] = useRecoilState(elementsState)
   const [newKeyVal, setKeyVal] = useState({});
+  const activeNode = useRecoilValue(ActiveNodeState)
+  const [elements, setElements] = useRecoilState(elementsState)
 
   const setAttribute = (field, value) => {
-    // console.log(value.length)
-    // console.log(field, value)
     setKeyVal({[field]: value})
   }
 
-
-  const updateNode = (node) => {
-    updateFirebase('nodes', node.id, node)
-
-
+  const addNewNode = async newNode => {
+    const newNodeId = await addToFirebase('nodes', newNode)
+    setElements((els) =>([...els, {...newNode, id: newNodeId}]))
   }
+
+  const updateNode = node => { updateFirebase('nodes', node.id, node) }
+
+
   useEffect(() => {
     const newEl = {...activeNode, data: {...newKeyVal}}
-    console.log('newField:value, ', {activeNode}, {newEl})
-    setElements((els) => els.map((el) => {
-        // console.log(el)
-        if (el.id == activeNode.id) {
-          // console.log('node to be edited', activeNode.id)
-          return newEl}
-        return el;
-      })
-    );
+    setElements(els => els.map((el) => el.id == activeNode.id ? newEl : el))
   }, [setElements]);
 
   const onConnect = (params) => {
-    // console.log("edge parameters:", params)
     setElements((els) => {
       const edge = addEdge(params, els)
       addToFirebase('edges', edge[edge.length - 1])
@@ -48,6 +38,7 @@ export const useNodeHook = () => {
   }
 
   return {
+    addNewNode,
     updateNode,
     onConnect,
     setAttribute,
