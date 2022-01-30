@@ -1,16 +1,11 @@
-import {useState, useEffect} from 'react'
-import { addToFirebase } from '../utils/firebase'
-import {collection, query } from "firebase/firestore"
-import {db} from '../utils/firebase'
-import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { isEditingState, elementsState, ActiveNodeState } from '../utils/store'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import Emoji from './misc/Emoji';
-import EditNodeForm from './EditNodeForm';
-import AddNodeForm from './AddNodeForm';
-import { useNodeHook } from '../utils/hooks/useNodeHook';
 
+import { removeElements } from 'react-flow-renderer';
+import { elementsState } from '../utils/store'
+import { useRecoilState } from 'recoil';
+import EditNodeForm from './Nodes/EditNodeForm';
+import AddNodeForm from './Nodes/AddNodeForm';
+import { useNodeHook } from '../utils/hooks/useNodeHook';
+import { SidebarWrapper } from './styles'
 
 
 const Sidebar = () => {
@@ -21,12 +16,10 @@ const Sidebar = () => {
   }
   const { updateNode, onConnect } = useNodeHook()
 
-
-
-return <div>
+return <SidebarWrapper>
   <AddNodeForm />
   <EditNodeForm />
-</div>;
-};
+</SidebarWrapper>
+}
 
 export default Sidebar;

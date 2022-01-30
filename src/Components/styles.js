@@ -6,23 +6,19 @@ export const SidebarWrapper = styled.aside`
 
 
 `
-export const AddNodeFormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
-  width: 100%;
 
 
 
 
-`
 
-export const EditNodeFormWrapper = styled.div`
+export const TimeLineWrapper = styled.div`
+  border: 2px solid grey;
+  background: hsla(120, 20%, 20%, .9);
+  width:100%;
+  height: 975px;
 
-  background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
-  width: 100%;
-
-
-
-
+  @media (max-width:500px) {
+    height: 70vh;
+  }
+  ${'' /* height: calc(100% - 2px); */}
 `
