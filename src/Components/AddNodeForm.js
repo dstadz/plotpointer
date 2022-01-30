@@ -7,14 +7,30 @@ import { AddNodeFormWrapper } from './styles';
 
 const AddNodeForm = () => {
   const [AddValue, setAddValue] = useState('')
+  const [newChar, setNewChar] = useState('')
+  const [newCharList, setNewCharList] = useState([])
   const [elements, setElements] = useRecoilState(elementsState)
 
   const { addNewNode, onConnect } = useNodeHook()
 
 
+
+
+
+  const handleNewChar = (e) => {
+    e.preventDefault()
+    setNewCharList(prevList => [...prevList, newChar])
+    setNewChar('')
+  }
+
+
   const handleAddChange = (e) => {
     e.preventDefault()
     setAddValue(e.target.value)
+  }
+  const handleAddCharChange = (e) => {
+    e.preventDefault()
+    setNewChar(e.target.value)
   }
   const handleAddSubmit = async (e) => {
     e.preventDefault()
@@ -24,7 +40,7 @@ const AddNodeForm = () => {
         position: { x: 150, y: 150 },
         data: {
           label: AddValue,
-          characters: []
+          characters: newCharList
         },
       }
       addNewNode(newNode)
@@ -39,6 +55,15 @@ return <AddNodeFormWrapper>
       rows="5" cols="33"
       onChange={handleAddChange}
     />
+    <input
+      value={newChar}
+      onChange={handleAddCharChange}
+
+    />
+    <button onClick={handleNewChar}><Emoji e={'➕'}/></button>
+    {newCharList.map(char => <p>char</p>)}
+
+    <br />
     <button type='submit'>Add New Event<Emoji e={'✅'}/></button>
   </form>
 </AddNodeFormWrapper>
