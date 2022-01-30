@@ -3,7 +3,7 @@ import { TimeLineWrapper } from '../styles';
 import { Background, MiniMap, Controls } from 'react-flow-renderer';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
-import EventNode from '../Components/Nodes/EventNode'
+import EventNode from './Nodes/EventNode'
 import { ActiveNodeState, elementsState } from '../utils/store';
 
 import {collection, query } from "firebase/firestore"

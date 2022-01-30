@@ -1,9 +1,9 @@
 import {useState, useEffect, useRef } from 'react'
-import { isEditingState, elementsState, ActiveNodeState } from '../utils/store'
+import { isEditingState, elementsState, ActiveNodeState } from '../../utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import Emoji from './misc/Emoji';
-import { useNodeHook } from '../utils/hooks/useNodeHook'
-import { EditNodeFormWrapper } from './styles';
+import Emoji from '../misc/Emoji';
+import { useNodeHook } from '../../utils/hooks/useNodeHook'
+import { EditNodeFormWrapper } from '../styles';
 import { getIncomers } from 'react-flow-renderer';
 
 const EditNodeForm = () => {

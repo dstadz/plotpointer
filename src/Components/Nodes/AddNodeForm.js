@@ -1,9 +1,9 @@
 import {useState, useEffect, useRef } from 'react'
-import { elementsState, ActiveNodeState } from '../utils/store'
+import { elementsState, ActiveNodeState } from '../../utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import Emoji from './misc/Emoji';
-import { useNodeHook } from '../utils/hooks/useNodeHook'
-import { AddNodeFormWrapper } from './styles';
+import Emoji from '../misc/Emoji';
+import { useNodeHook } from '../../utils/hooks/useNodeHook'
+import { AddNodeFormWrapper } from '../styles';
 
 const AddNodeForm = () => {
   const [AddValue, setAddValue] = useState('')

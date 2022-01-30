@@ -17,5 +17,9 @@ export const TimeLineWrapper = styled.div`
   background: hsla(120, 20%, 20%, .9);
   width:100%;
   height: 975px;
+
+  @media (max-width:500px) {
+    height: 70vh;
+  }
   ${'' /* height: calc(100% - 2px); */}
 `
