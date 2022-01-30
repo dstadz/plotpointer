@@ -26,6 +26,14 @@ const TimeLine = () => {
 
   const onElementClickHandler = (_, element) => {setActiveNode(element)}
 
+const onEdgeContextMenuHanlder = (_, element) => {
+
+  console.log(element)
+}
+
+  const onNodeDoubleClickHandler = (_, node) => { console.log(node)}
+
+
   const nodeTypes = {eventNode: EventNode,}
 
 return <TimeLineWrapper id='timeline'>
@@ -39,8 +47,9 @@ return <TimeLineWrapper id='timeline'>
     zoomOnDoubleClick={true}
     onConnect={onConnect}
     onNodeDragStop={onNodeDragStop}
+    onNodeDoubleClick={onNodeDoubleClickHandler}
     onElementClick={onElementClickHandler}
-    // onEdgeContextMenu={onEdgeContextMenuHanlder}
+    onEdgeContextMenu={onEdgeContextMenuHanlder}
     // onNodeContextMenu={onNodeContextMenu}
   >
     <MiniMap />

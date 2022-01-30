@@ -61,7 +61,7 @@ return <AddNodeFormWrapper>
 
     />
     <button onClick={handleNewChar}><Emoji e={'➕'}/></button>
-    {newCharList.map(char => <p>char</p>)}
+    {newCharList.map(char => <p>{char}</p>)}
 
     <br />
     <button type='submit'>Add New Event<Emoji e={'✅'}/></button>

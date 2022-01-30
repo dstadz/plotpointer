@@ -4,24 +4,32 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from './misc/Emoji';
 import { useNodeHook } from '../utils/hooks/useNodeHook'
 import { EditNodeFormWrapper } from './styles';
+import { getIncomers } from 'react-flow-renderer';
 
 const EditNodeForm = () => {
-  const [editValue, setEditValue] = useState('')
   const activeNode = useRecoilValue(ActiveNodeState)
+  const [editValue, setEditValue] = useState('')
   const [elements, setElements] = useRecoilState(elementsState)
   const [isEditing, setEditing] = useRecoilState(isEditingState)
+  const [potentialChars, setPotentialCharacters] = useState([])
 
   const { updateNode, onConnect } = useNodeHook()
 
   const editFormRef = useRef()
-  useEffect(() => {
-    if (isEditing) {
-      editFormRef.current.focus();
-    }
-  },[isEditing])
+  useEffect(() => isEditing && editFormRef.current.focus() ,[isEditing])
 
   useEffect(() => {
     if (isEditing) setEditValue(activeNode.data?.label || '' )
+    const prevNodes = getIncomers(activeNode, elements)
+
+    const poChars = []
+    for (const node of prevNodes) {
+      console.log(node?.data?.characters)
+      poChars.push(...node.data.characters)
+    }
+    setPotentialCharacters(poChars)
+
+
   },[isEditing, activeNode])
 
 
@@ -43,7 +51,8 @@ const EditNodeForm = () => {
   }
 
 
-return isEditing ? <EditNodeFormWrapper>
+console.log (potentialChars)
+return isEditing && <EditNodeFormWrapper>
   <form onSubmit={handleEditSubmit}>
     <textarea
       value={editValue}
@@ -53,7 +62,12 @@ return isEditing ? <EditNodeFormWrapper>
     />
     <button type='submit'>Submit Edit<Emoji e={'✅'}/></button>
   </form>
-</EditNodeFormWrapper> : null
+
+  <ul>
+    {potentialChars.map((char) => <li key={char}>{char}</li>)}
+  </ul>
+
+</EditNodeFormWrapper>
 };
 
 export default EditNodeForm;
