@@ -10,8 +10,6 @@ export default memo(({ id, data}) => {
   const setEditing = useSetRecoilState(isEditingState)
   const handleEdit = () => {setEditing(wasEditing => !wasEditing)}
 
-
-  console.log(label, characters)
 return <EventNodeWrapper>
   <Handle
     type="target"

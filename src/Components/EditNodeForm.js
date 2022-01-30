@@ -63,8 +63,12 @@ return isEditing && <EditNodeFormWrapper>
     <button type='submit'>Submit Edit<Emoji e={'✅'}/></button>
   </form>
 
+  <p> Characters: </p>
   <ul>
-    {potentialChars.map((char) => <li key={char}>{char}</li>)}
+    {potentialChars.map((char) => <div>
+      <input type="checkbox" id={char} name={char} />
+      <label for="horns">{char}</label>
+    </div>)}
   </ul>
 
 </EditNodeFormWrapper>
