@@ -3,6 +3,10 @@ import { FormWrapper } from 'styles'
 
 
 export const SidebarWrapper = styled.aside`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: hsla(240, 70%, 70%, .9);
   width: calc(25vw);
 
   @media (max-width:500px) {
@@ -22,14 +26,14 @@ export const TimeLineWrapper = styled.section`
   ${'' /* height: calc(100% - 2px); */}
 `
 
-export const AddCharacterFormWrapper = styled.div`
+export const AddCharFormWrapper = styled(FormWrapper)`
   display: flex;
   flex-direction: column;
   background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
   width: 100%;
 `
 
-export const EditCharacterFormWrapper = styled.div`
+export const EditCharacterFormWrapper = styled(FormWrapper)`
   background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
   width: 100%;
 `
@@ -100,13 +104,11 @@ export const EventNodeWrapper = styled.div`
   }
 `
 
-
-
 export const AddNodeFormWrapper = styled(FormWrapper)`
 
 `
 
-export const EditNodeFormWrapper = styled.div`
+export const EditNodeFormWrapper = styled(FormWrapper)`
   background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
   width: 100%;
 `

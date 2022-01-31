@@ -6,7 +6,7 @@ import { useNodeHook } from 'utils/hooks'
 import { EditNodeFormWrapper } from '../styles';
 import { getIncomers } from 'react-flow-renderer';
 
-const EditNodeForm = () => {
+export const EditNodeForm = () => {
   const activeNode = useRecoilValue(ActiveNodeState)
   const [editValue, setEditValue] = useState('')
   const [elements, setElements] = useRecoilState(elementsState)
@@ -73,6 +73,4 @@ return <EditNodeFormWrapper>
   </ul>
 
 </EditNodeFormWrapper>
-};
-
-export default EditNodeForm;
+}

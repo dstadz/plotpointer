@@ -1,18 +1,17 @@
 import {useState, useEffect, useRef } from 'react'
 import Emoji from 'Components/misc/Emoji';
 import { useCharacterHook } from 'utils/hooks'
-import { AddCharacterFormWrapper } from '../styles';
+import { AddCharFormWrapper } from '../styles';
 import Picker from 'emoji-picker-react';
 
-const AddCharacterForm = () => {
+export const AddCharForm = ({ setAddCharUp }) => {
   const [newCharName, setNewCharName] = useState('')
+  const [isPickerUp, setPickerUp] = useState(false)
   const { addNewCharacter } = useCharacterHook()
   const [chosenEmoji, setChosenEmoji] = useState(null);
 
-  const onEmojiClick = (_, emojiObject) => {
-    console.log(emojiObject)
-    setChosenEmoji(emojiObject);
-  };
+  const onEmojiClick = (_, emojiObject) => { setChosenEmoji(emojiObject); };
+  const togglePickerUp = () => { setPickerUp(wasUp => !wasUp) }
 
   const handleNewCharChange = (e) => {
     e.preventDefault()
@@ -23,17 +22,23 @@ const AddCharacterForm = () => {
     e.preventDefault()
       const newCharacter = {
         storyId: 'drazen05',
-        name: 'eventCharacter',
+        name: newCharName,
         emoji: chosenEmoji?.emoji,
         desccription: '',
         data: {}
       }
       addNewCharacter(newCharacter)
+      setAddCharUp(false)
+      setPickerUp(false)
       setNewCharName('')
     }
 
-return <AddCharacterFormWrapper>
-  <h3> Add Character </h3>
+return <AddCharFormWrapper>
+  <div className="header">
+    <h3> Add Character </h3>
+    <button onClick={()=> setAddCharUp(false)}><Emoji e={'❌'}/></button>
+  </div>
+
   <form onSubmit={handleNewCharSubmit}>
 
 
@@ -46,16 +51,16 @@ return <AddCharacterFormWrapper>
 
       <br />
       <br />
-    <Picker
-      onEmojiClick={onEmojiClick}
-      disableAutoFocus={true}
-      groupVisibility={{smileys_people: false, recently_used: false}}
-      // native
-    />
-    <br />
-    <button type='submit'>Add New Characters<Emoji e={'✅'}/></button>
+    {isPickerUp
+      ? <Picker
+          onEmojiClick={onEmojiClick}
+          groupVisibility={{smileys_people: false, recently_used: false}}
+        />
+      : <button onClick={togglePickerUp}>
+          add Emoji <Emoji e={'😀'}/>
+        </button>
+      }<br />
+    <button type='submit'>Add New Character<Emoji e={'✅'}/></button>
   </form>
-</AddCharacterFormWrapper>
-};
-
-export default AddCharacterForm;
+</AddCharFormWrapper>
+}

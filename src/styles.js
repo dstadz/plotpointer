@@ -18,10 +18,23 @@ export const AppWrapper = styled.div`
 
 export const FormWrapper = styled.div`
 
-border-radius: 5px;
-border: 2px solid hsla(240, 25%, 40%, .9);
-display: flex;
-flex-direction: column;
-background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
-width: 100%;
+  border-radius: 5px;
+  border: 2px solid hsla(240, 25%, 40%, .9);
+  display: flex;
+  flex-direction: column;
+  background-color: hsla(${Math.floor(Math.random()*359)},50%,50%,.8);
+  width: 100%;
+
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    h3 {
+      margin: 0;
+    }
+    button {
+      background: none;
+      border: none;
+    }
+  }
 `

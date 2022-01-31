@@ -12,13 +12,12 @@ import {
 } from 'react-flow-renderer';
 
 
-const AddNodeForm = () => {
+export const AddNodeForm = () => {
   const [AddValue, setAddValue] = useState('')
   const [newChar, setNewChar] = useState('')
   const [newCharList, setNewCharList] = useState([])
-  const [elements, setElements] = useRecoilState(elementsState)
-  const { addNewNode, onConnect } = useNodeHook()
-  const [xPos, yPos, zoom] = useStoreState((store) => store.transform);
+  const { addNewNode } = useNodeHook()
+  const [xPos, yPos] = useStoreState((store) => store.transform);
 
 
   const handleNewChar = (e) => {
@@ -77,6 +76,4 @@ return <AddNodeFormWrapper>
     <button type='submit'>Add New Event<Emoji e={'✅'}/></button>
   </form>
 </AddNodeFormWrapper>
-};
-
-export default AddNodeForm;
+}
