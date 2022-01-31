@@ -10,13 +10,13 @@ export const ActiveNodeState = atom({
   default: {}
 })
 
-export const charactersState = atom({
-  key: 'charactersState',
+export const characterListState = atom({
+  key: 'characterListState',
   default: []
 })
 
 export const ActiveCharacterState = atom({
-  key: 'ActivecharactersState',
+  key: 'ActiveCharacterState',
   default: {}
 })
 
@@ -24,6 +24,14 @@ export const isEditingState = atom({
   key: 'isEditingState',
   default: false
 })
+
+export const ActiveStoryState = atom({
+  key: 'ActiveStoryState',
+  default: {
+    id: "UFYj9LmkeLuTAc7LvT6N"
+  }
+})
+
 
 // export const elementsState = atom({
 //   key: 'elementsState',

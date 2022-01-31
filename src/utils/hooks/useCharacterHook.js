@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { addToFirebase, updateFirebase } from 'utils/firebase'
-import { ActiveCharacterState, charactersState } from 'utils/store/'
+import { ActiveCharacterState, characterListState } from 'utils/store/'
 
 export const useCharacterHook = () => {
   const activeCharacter = useRecoilValue(ActiveCharacterState)
-  const [characters, setCharacters] = useRecoilState(charactersState)
+  const [characters, setCharacters] = useRecoilState(characterListState)
 
   const addNewCharacter = async newCharacter => {
     const newCharacterId = await addToFirebase('characters', newCharacter)
