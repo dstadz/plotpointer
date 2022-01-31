@@ -10,6 +10,16 @@ export const ActiveNodeState = atom({
   default: {}
 })
 
+export const charactersState = atom({
+  key: 'charactersState',
+  default: []
+})
+
+export const ActiveCharacterState = atom({
+  key: 'ActivecharactersState',
+  default: {}
+})
+
 export const isEditingState = atom({
   key: 'isEditingState',
   default: false

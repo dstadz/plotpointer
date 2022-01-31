@@ -9,7 +9,7 @@ export const EventNodeWrapper = styled.div`
     background: white;
     border-radius: 5px;
     text-align: center;
-
+    overflow: hidden;
 
     nav {
       display: flex;
@@ -23,16 +23,23 @@ export const EventNodeWrapper = styled.div`
 
     .inner-content{
       padding: 0 10px;
+      background: hsla(200,50%,80%,.9);
+
       ${'' /* max-width: 150px; */}
 
-
+    }
       ul{
+        display: flex;
+        justify-content: space-around;
         background: hsla(330,50%,50%,.9);
-        list-style: none;
         padding: 0;
+        margin: 0;
+
+        li {
+        }
 
       }
-    }
+
 
   }
 

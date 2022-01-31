@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
-import { addToFirebase } from '../firebase'
+import { addToFirebase } from 'utils/firebase'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {updateFirebase } from '../firebase'
-import { ActiveNodeState, elementsState } from '../store'
+import {updateFirebase } from 'utils/firebase'
+import { ActiveNodeState, elementsState } from 'utils/store'
+
+
+const node = {
+  storyId: "",
+  type: "",
+  position: {x: 0, y: 0},
+  data: {
+    label: '',
+    characters: [{}]
+  },
+}
 
 
 export const useNodeHook = () => {

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
-import { addToFirebase } from '../firebase'
+import { addToFirebase } from 'utils/firebase'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {updateFirebase } from '../firebase'
-import { ActiveCharacterState, elementsState } from '../store'
+import {updateFirebase } from 'utils/firebase'
+import { ActiveCharacterState, elementsState } from 'utils/store/'
 
 
 
 
 
 const characterObj = {
+  storyId: '',
   name: '',
   emoji: '😁',
-  storyId: '',
   desccription: '',
+  data: {}
 }
 
 

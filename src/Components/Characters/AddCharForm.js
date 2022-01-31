@@ -1,9 +1,9 @@
 import {useState, useEffect, useRef } from 'react'
-import { elementsState, ActiveNodeState } from 'utils/store'
+import { elementsState, ActiveCharacterState } from 'utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from 'Components/misc/Emoji';
-import { useNodeHook } from 'utils/hooks/useNodeHook'
-import { AddNodeFormWrapper } from './styles';
+import { useCharacterHook } from 'utils/hooks'
+import { AddCharacterFormWrapper } from './styles';
 
 import {
   removeElements,
@@ -12,12 +12,12 @@ import {
 } from 'react-flow-renderer';
 
 
-const AddNodeForm = () => {
+const AddCharacterForm = () => {
   const [AddValue, setAddValue] = useState('')
   const [newChar, setNewChar] = useState('')
   const [newCharList, setNewCharList] = useState([])
   const [elements, setElements] = useRecoilState(elementsState)
-  const { addNewNode, onConnect } = useNodeHook()
+  const { addNewCharacter, onConnect } = useCharacterHook()
   const [xPos, yPos, zoom] = useStoreState((store) => store.transform);
 
 
@@ -38,9 +38,9 @@ const AddNodeForm = () => {
   }
   const handleAddSubmit = async (e) => {
     e.preventDefault()
-      const newNode = {
+      const newCharacter = {
         storyId: 'drazen05',
-        type: 'eventNode',
+        type: 'eventCharacter',
         position: {
           x: -1 * Math.floor(xPos) + 25,
           y: Math.floor(yPos) + 25
@@ -50,13 +50,13 @@ const AddNodeForm = () => {
           characters: newCharList
         },
       }
-      addNewNode(newNode)
+      addNewCharacter(newCharacter)
       setAddValue('')
       setNewCharList([])
     }
 
 
-return <AddNodeFormWrapper>
+return <AddCharacterFormWrapper>
   <form onSubmit={handleAddSubmit}>
     <textarea
       value={AddValue}
@@ -74,7 +74,7 @@ return <AddNodeFormWrapper>
     <br />
     <button type='submit'>Add New Event<Emoji e={'✅'}/></button>
   </form>
-</AddNodeFormWrapper>
+</AddCharacterFormWrapper>
 };
 
-export default AddNodeForm;
+export default AddCharacterForm;

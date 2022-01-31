@@ -1,9 +1,9 @@
 
-import { elementsState, isEditingState } from '../utils/store'
+import { elementsState, isEditingState } from 'utils/store'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import EditNodeForm from './Nodes/EditNodeForm';
 import AddNodeForm from './Nodes/AddNodeForm';
-import { useNodeHook } from '../utils/hooks/useNodeHook';
+import { useNodeHook } from 'utils/hooks';
 import { SidebarWrapper } from './styles'
 
 import {
