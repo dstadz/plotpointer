@@ -1,15 +1,14 @@
-import {useEffect} from 'react'
-import { TimeLineWrapper } from './styles';
-import { Background, MiniMap, Controls } from 'react-flow-renderer';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { useNodeHook } from 'utils/hooks/useNodeHook'
+import { useEffect } from 'react'
+import { db } from 'utils/firebase'
 import EventNode from './Nodes/EventNode'
-import { ActiveNodeState, elementsState } from '../utils/store';
-
+import { TimeLineWrapper } from './styles'
+import { useNodeHook } from 'utils/hooks/useNodeHook'
 import {collection, query } from "firebase/firestore"
-import {db} from '../utils/firebase'
-import ReactFlow from 'react-flow-renderer';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { ActiveNodeState, elementsState } from 'utils/store'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import ReactFlow, { Background, MiniMap, Controls } from 'react-flow-renderer'
+
 
 const TimeLine = () => {
   const setActiveNode = useSetRecoilState(ActiveNodeState)
@@ -27,32 +26,26 @@ const TimeLine = () => {
   const onElementClickHandler = (_, element) => { setActiveNode(element) }
   const onEdgeContextMenuHanlder = (_, element) => { console.log(element) }
 
-
   const nodeTypes = {eventNode: EventNode,}
+  const framePosition = [0,0]
+  const onLoad = (reactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
 
 return <TimeLineWrapper id='timeline'>
   <ReactFlow id='react-flow'
-    nodeTypes={nodeTypes}
+    onLoad={onLoad}
+    defaultPosition={framePosition}
+    // onMoveEnd={onMoveEndHandler}
     elements={elements}
-    elementsSelectable={true}
-    nodesConnectable={true}
-    nodesDraggable={true}
-    zoomOnScroll={true}
-    zoomOnDoubleClick={true}
     onConnect={onConnect}
+    nodeTypes={nodeTypes}
     onNodeDragStop={onNodeDragStop}
-    onNodeDoubleClick={onNodeDoubleClickHandler}
     onElementClick={onElementClickHandler}
+    onNodeDoubleClick={onNodeDoubleClickHandler}
     onEdgeContextMenu={onEdgeContextMenuHanlder}
     // onNodeContextMenu={onNodeContextMenu}
   >
     <MiniMap />
     <Controls />
-
-    {/* <div style={{backgroundColor: 'red'}}>
-      another comp
-    </div> */}
-
     <Background
       variant="lines"
       gap={50}

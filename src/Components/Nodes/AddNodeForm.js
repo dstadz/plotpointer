@@ -5,16 +5,20 @@ import Emoji from '../misc/Emoji';
 import { useNodeHook } from 'utils/hooks/useNodeHook'
 import { AddNodeFormWrapper } from './styles';
 
+import {
+  removeElements,
+  useStoreState,
+  useStoreActions
+} from 'react-flow-renderer';
+
+
 const AddNodeForm = () => {
   const [AddValue, setAddValue] = useState('')
   const [newChar, setNewChar] = useState('')
   const [newCharList, setNewCharList] = useState([])
   const [elements, setElements] = useRecoilState(elementsState)
-
   const { addNewNode, onConnect } = useNodeHook()
-
-
-
+  const [xPos, yPos, zoom] = useStoreState((store) => store.transform);
 
 
   const handleNewChar = (e) => {
@@ -37,7 +41,10 @@ const AddNodeForm = () => {
       const newNode = {
         storyId: 'drazen05',
         type: 'eventNode',
-        position: { x: 150, y: 150 },
+        position: {
+          x: -1 * Math.floor(xPos) + 25,
+          y: Math.floor(yPos) + 25
+        },
         data: {
           label: AddValue,
           characters: newCharList
@@ -45,6 +52,7 @@ const AddNodeForm = () => {
       }
       addNewNode(newNode)
       setAddValue('')
+      setNewCharList([])
     }
 
 
@@ -61,7 +69,7 @@ return <AddNodeFormWrapper>
 
     />
     <button onClick={handleNewChar}><Emoji e={'➕'}/></button>
-    {newCharList.map(char => <p>{char}</p>)}
+    {newCharList.map(char => <p key={char}>{char}</p>)}
 
     <br />
     <button type='submit'>Add New Event<Emoji e={'✅'}/></button>

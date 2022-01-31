@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 
 export const EventNodeWrapper = styled.div`
+  max-width:250px;
+
   .node {
     border: 1px solid black;
     ${'' /* padding: 0 10px; */}
     background: white;
     border-radius: 5px;
-    max-width:350px;
     text-align: center;
 
 

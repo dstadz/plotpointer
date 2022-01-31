@@ -13,5 +13,5 @@ export const AppWrapper = styled.div`
     flex-direction: column;
   }
 
-  background: hsla(240, 20%, 20%, .9);
+  background: hsla(200, 70%, 40%, .9);
 `

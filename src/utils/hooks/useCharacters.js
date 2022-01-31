@@ -33,29 +33,29 @@ export const useCharacterHook = () => {
 
   const addNewCharacter = async newCharacter => {
     const newCharacterId = await addToFirebase('characters', newCharacter)
-    setElements((els) =>([...els, {...newCharacter, id: newCharacterId}]))
+    // setElements((els) =>([...els, {...newCharacter, id: newCharacterId}]))
   }
 
   const updateCharacter = character => { updateFirebase('characters', character.id, character) }
 
 
-  useEffect(() => {
-    const newEl = {...activeCharacter, data: {...newKeyVal}}
-    setElements(els => els.map((el) => el.id == activeCharacter.id ? newEl : el))
-  }, [setElements]);
+  // useEffect(() => {
+  //   const newEl = {...activeCharacter, data: {...newKeyVal}}
+  //   setElements(els => els.map((el) => el.id == activeCharacter.id ? newEl : el))
+  // }, [setElements]);
 
-  const onConnect = (params) => {
-    setElements((els) => {
-      const edge = addEdge(params, els)
-      addToFirebase('edges', edge[edge.length - 1])
-      return edge
-    })
-  }
+  // const onConnect = (params) => {
+  //   setElements((els) => {
+  //     const edge = addEdge(params, els)
+  //     addToFirebase('edges', edge[edge.length - 1])
+  //     return edge
+  //   })
+  // }
 
   return {
     addNewCharacter,
     updateCharacter,
-    onConnect,
+    // onConnect,
     setAttribute,
   }
 }

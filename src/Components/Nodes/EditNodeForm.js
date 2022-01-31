@@ -51,8 +51,7 @@ const EditNodeForm = () => {
   }
 
 
-console.log (potentialChars)
-return isEditing && <EditNodeFormWrapper>
+return <EditNodeFormWrapper>
   <form onSubmit={handleEditSubmit}>
     <textarea
       value={editValue}
