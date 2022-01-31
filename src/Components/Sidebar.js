@@ -1,8 +1,8 @@
 
 import { elementsState, isEditingState } from 'utils/store'
 import { useRecoilState, useRecoilValue } from 'recoil';
-import EditNodeForm from './Nodes/EditNodeForm';
-import AddNodeForm from './Nodes/AddNodeForm';
+import EditNodeForm from './Forms/EditNodeForm';
+import AddNodeForm from './Forms/AddNodeForm';
 import { useNodeHook } from 'utils/hooks';
 import { SidebarWrapper } from './styles'
 
@@ -11,6 +11,7 @@ import {
   useStoreState,
   useStoreActions
 } from 'react-flow-renderer';
+import AddCharacterForm from './Forms/AddCharForm';
 
 
 
@@ -46,6 +47,7 @@ const Sidebar = () => {
 
 return <SidebarWrapper id='sidebar'>
   <AddNodeForm />
+  <AddCharacterForm />
   {isEditing && <EditNodeForm />}
 
 

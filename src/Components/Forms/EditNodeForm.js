@@ -2,8 +2,8 @@ import {useState, useEffect, useRef } from 'react'
 import { isEditingState, elementsState, ActiveNodeState } from 'utils/store'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Emoji from 'Components/misc/Emoji';
-import { useNodeHook } from 'utils/hooks/useNodeHook'
-import { EditNodeFormWrapper } from './styles';
+import { useNodeHook } from 'utils/hooks'
+import { EditNodeFormWrapper } from '../styles';
 import { getIncomers } from 'react-flow-renderer';
 
 const EditNodeForm = () => {
@@ -52,6 +52,8 @@ const EditNodeForm = () => {
 
 
 return <EditNodeFormWrapper>
+  <h3> Edit Event</h3>
+
   <form onSubmit={handleEditSubmit}>
     <textarea
       value={editValue}

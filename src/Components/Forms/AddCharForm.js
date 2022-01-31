@@ -3,7 +3,7 @@ import { elementsState, ActiveCharacterState } from 'utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from 'Components/misc/Emoji';
 import { useCharacterHook } from 'utils/hooks'
-import { AddCharacterFormWrapper } from './styles';
+import { AddCharacterFormWrapper } from '../styles';
 
 import {
   removeElements,
@@ -57,6 +57,7 @@ const AddCharacterForm = () => {
 
 
 return <AddCharacterFormWrapper>
+  <h3> Add Character </h3>
   <form onSubmit={handleAddSubmit}>
     <textarea
       value={AddValue}

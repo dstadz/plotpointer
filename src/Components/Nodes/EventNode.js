@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react'
 import { Handle } from 'react-flow-renderer'
 import Emoji from 'Components/misc/Emoji'
-import { EventNodeWrapper } from './styles'
+import { EventNodeWrapper } from '../styles'
 import { useSetRecoilState } from 'recoil'
 import { ActiveNodeState, elementsState, isEditingState } from 'utils/store'
 

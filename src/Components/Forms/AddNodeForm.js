@@ -3,7 +3,7 @@ import { elementsState, ActiveNodeState } from 'utils/store'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Emoji from 'Components/misc/Emoji';
 import { useNodeHook } from 'utils/hooks/useNodeHook'
-import { AddNodeFormWrapper } from './styles';
+import { AddNodeFormWrapper } from '../styles';
 
 import {
   removeElements,
@@ -57,6 +57,8 @@ const AddNodeForm = () => {
 
 
 return <AddNodeFormWrapper>
+  <h3> Add Event </h3>
+
   <form onSubmit={handleAddSubmit}>
     <textarea
       value={AddValue}
