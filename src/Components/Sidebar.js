@@ -55,12 +55,6 @@ return <SidebarWrapper id='sidebar'>
   <div className="transform">
     [{transform[0].toFixed(2)}, {transform[1].toFixed(2)}, {transform[2].toFixed(2)}]
   </div>
-  {/* <div className="title">Nodes</div>
-  {nodes.map((node) => (
-    <div key={node.id}>
-      Node {node.id} - x: {node.__rf.position.x.toFixed(2)}, y: {node.__rf.position.y.toFixed(2)}
-    </div>
-  ))} */}
 
   <div className="selectall">
     <button onClick={selectAll}>select all nodes</button>

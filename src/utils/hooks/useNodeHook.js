@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ReactFlow, { removeElements, addEdge } from 'react-flow-renderer';
+import { addEdge } from 'react-flow-renderer';
 import { addToFirebase } from 'utils/firebase'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -19,13 +19,8 @@ const node = {
 
 
 export const useNodeHook = () => {
-  const [newKeyVal, setKeyVal] = useState({});
   const activeNode = useRecoilValue(ActiveNodeState)
   const [elements, setElements] = useRecoilState(elementsState)
-
-  const setAttribute = (field, value) => {
-    setKeyVal({[field]: value})
-  }
 
   const addNewNode = async newNode => {
     const newNodeId = await addToFirebase('nodes', newNode)
@@ -33,12 +28,6 @@ export const useNodeHook = () => {
   }
 
   const updateNode = node => { updateFirebase('nodes', node.id, node) }
-
-
-  useEffect(() => {
-    const newEl = {...activeNode, data: {...newKeyVal}}
-    setElements(els => els.map((el) => el.id == activeNode.id ? newEl : el))
-  }, [setElements]);
 
   const onConnect = (params) => {
     setElements((els) => {
@@ -52,6 +41,5 @@ export const useNodeHook = () => {
     addNewNode,
     updateNode,
     onConnect,
-    setAttribute,
   }
 }

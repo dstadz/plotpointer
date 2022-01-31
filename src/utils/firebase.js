@@ -34,9 +34,9 @@ export const addToFirebase = async (
       ...content,
       created: Timestamp.now(),
     }
-    const newDocThing = await addDoc(collection(db, collectionId ), dataToStore)
+    const newDocThing = await addDoc(collection(db, collectionId), dataToStore)
     const latestNodeRef = doc(db, collectionId, newDocThing.id)
-    updateDoc(latestNodeRef,{ id:newDocThing.id})
+    updateDoc(latestNodeRef, { id: newDocThing.id })
 
     return newDocThing.id
   } catch (err) { console.log(err) }
