@@ -23,6 +23,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
 
+export const getFromFirebase = async (
+  collectionId,
+  contentId
+) => {
+  const docRef = doc(db, collectionId, contentId);
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists() ? docSnap : 'does not exist'
+}
+
 /* function to add new task to firestore */
 export const addToFirebase = async (
   collectionId,
@@ -39,7 +48,7 @@ export const addToFirebase = async (
     updateDoc(latestNodeRef, { id: newDocThing.id })
 
     return newDocThing.id
-  } catch (err) { console.log(err) }
+  } catch (err) { console.log(collectionId, content, err) }
 }
 
 export const deleteFromFirebase = async (
