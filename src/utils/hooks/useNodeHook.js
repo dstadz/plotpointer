@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { addEdge } from 'react-flow-renderer';
-import { addToFirebase, updateFirebase } from 'utils/firebase'
+import { useEffect } from 'react'
+import { addEdge } from 'react-flow-renderer'
+import { collection, query } from "firebase/firestore"
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { ActiveNodeState, ActiveStoryState, elementsState } from 'utils/store'
+import { ActiveStoryState, elementsState } from 'utils/store'
+import { db, addToFirebase, updateFirebase } from 'utils/firebase'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 export const useNodeHook = () => {
-  const activeNode = useRecoilValue(ActiveNodeState)
   const activeStory = useRecoilValue(ActiveStoryState)
   const [elements, setElements] = useRecoilState(elementsState)
+  const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
+  const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
+  useEffect(() => {
+    if (nodeError || edgeError) {console.error(nodeError, edgeError)}
+    if (nodeValues && edgeValues) {setElements([...nodeValues, ...edgeValues])}
+  }, [nodeLoading, edgeLoading])
 
   const addNewNode = async newNode => {
     const newNodeId = await addToFirebase('nodes', newNode)
@@ -27,9 +34,10 @@ export const useNodeHook = () => {
   }
 
   return {
+    elements,
+    onConnect,
     addNewNode,
     updateNode,
-    onConnect,
   }
 }
 
