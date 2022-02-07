@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import {
-  useStoreState,
-  useStoreActions
-} from 'react-flow-renderer'
+import React, { useState, useEffect, useRef } from 'react'
+import { db } from 'utils/firebase'
+import {collection, query } from "firebase/firestore"
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { addToFirebase, updateFirebase } from 'utils/firebase'
+import { addToFirebase, updateFirebase, getFromFirebase } from 'utils/firebase'
 import { ActiveStoryState } from 'utils/store'
 
 export const useStoryHook = () => {
-  const activeStory = useRecoilValue(ActiveStoryState)
-  const [xPos, yPos] = useStoreState((store) => store.transform);
-  // const addStory = (story) => {addToFirebase('stories', story)}
+  const isPast1st = useRef(false)
+  const [activeStory, setActiveStory] = useRecoilState(ActiveStoryState)
+  const [snapshot, loading, error] = useCollectionData(query(collection(db, 'stories')))
+  const updateStory = story => {
+    updateFirebase('stories', story.id, story)
+  }
 
-  useEffect(() => {
-    const updateLastWindowPos = () => {
-      const lastPosStory = {
-        ...activeStory,
-        position: {
-          x: Math.floor(xPos),
-          y: Math.floor(yPos)
-        }
-      }
-      updateFirebase('stories', activeStory.id, lastPosStory)
+  useEffect(() =>{
+    if (error) console.error(error)
+    if (snapshot) {setActiveStory(snapshot[0])
+    console.log(snapshot[0])}
+    // if (snapshot) {
+    //   console.log(snapshot[0])
+    //   const storybase = getFromFirebase('stories', activeStory.id)
+    //   .then(res => console.log('res', res.document))
+    //   console.log(storybase)
+    //   setActiveStory(activeStory)
+    // }
 
-    }
-    window.addEventListener('beforeunload', updateLastWindowPos);
-    return () => { window.removeEventListener('beforeunload', updateLastWindowPos) }
-  }, [])
 
-// return {}
+  },[loading])
+
+
+  return {
+    activeStory,
+    updateStory,
+  }
 }
 
 const story = {

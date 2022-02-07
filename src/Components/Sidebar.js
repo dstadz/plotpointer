@@ -11,16 +11,10 @@ import { elementsState, isEditingState } from 'utils/store'
 import { useStoryHook } from 'utils/hooks'
 
 const Sidebar = () => {
-  useStoryHook()
+  // useStoryHook()
   const isEditing = useRecoilValue(isEditingState)
   const [isAddCharUp, setAddCharUp] = useState(false)
   const transform = useStoreState((store) => store.transform)
-
-  const story1 = {
-    userId: "daniel",
-    title: "Reclamation Quest",
-    lastTransform: [0,0,1]
-  }
 
 return <SidebarWrapper id='sidebar'>
   <AddNodeForm />

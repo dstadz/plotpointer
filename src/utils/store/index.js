@@ -27,9 +27,7 @@ export const isEditingState = atom({
 
 export const ActiveStoryState = atom({
   key: 'ActiveStoryState',
-  default: {
-    id: "UFYj9LmkeLuTAc7LvT6N"
-  }
+  default: {}
 })
 
 

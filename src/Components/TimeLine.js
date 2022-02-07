@@ -8,9 +8,10 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import { ActiveNodeState, elementsState } from 'utils/store'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import ReactFlow, { Background, MiniMap, Controls } from 'react-flow-renderer'
-
+import { useStoryHook } from 'utils/hooks'
 
 const TimeLine = () => {
+  const { activeStory, updateStory } = useStoryHook()
   const setActiveNode = useSetRecoilState(ActiveNodeState)
   const [elements, setElements] = useRecoilState(elementsState)
   const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
@@ -27,17 +28,28 @@ const TimeLine = () => {
   const onEdgeContextMenuHanlder = (_, element) => { console.log(element) }
 
   const nodeTypes = {eventNode: EventNode,}
-  const framePosition = [0,0]
-  const onLoad = (reactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
+  const onLoad = ({setTransform}) => {
+    console.log({activeStory})
+    setTransform({
+      x: activeStory.x,
+      y: activeStory.y,
+      zoom: activeStory.zoom,
+    })
+  }
+
+  const onMoveEndHandler = flowTransform => {
+    const newStory = {...activeStory, ...flowTransform}
+    // console.log('onMoveEnd:', flowTransform, newStory)
+    updateStory(newStory)
+  }
 
 return <TimeLineWrapper id='timeline'>
-  <ReactFlow id='react-flow'
+  {activeStory.id && <ReactFlow id='react-flow'
     onLoad={onLoad}
-    defaultPosition={framePosition}
-    // onMoveEnd={onMoveEndHandler}
     elements={elements}
     onConnect={onConnect}
     nodeTypes={nodeTypes}
+    onMoveEnd={onMoveEndHandler}
     onNodeDragStop={onNodeDragStop}
     onElementClick={onElementClickHandler}
     onNodeDoubleClick={onNodeDoubleClickHandler}
@@ -51,7 +63,7 @@ return <TimeLineWrapper id='timeline'>
       gap={50}
       size={.1}
     />
-  </ReactFlow>
+  </ReactFlow>}
 </TimeLineWrapper>
 }
 
