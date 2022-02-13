@@ -10,8 +10,8 @@ export const ActiveNodeState = atom({
   default: {}
 })
 
-export const characterListState = atom({
-  key: 'characterListState',
+export const allCharacterListState = atom({
+  key: 'allCharacterListState',
   default: []
 })
 

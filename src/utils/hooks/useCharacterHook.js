@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { addToFirebase, updateFirebase } from 'utils/firebase'
-import { ActiveCharacterState, characterListState } from 'utils/store/'
+import { ActiveCharacterState, allCharacterListState } from 'utils/store/'
 import {collection, query } from "firebase/firestore"
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from 'utils/firebase'
@@ -10,16 +10,18 @@ import { db } from 'utils/firebase'
 
 export const useCharacterHook = () => {
   const activeCharacter = useRecoilValue(ActiveCharacterState)
-  const [characterList, setCharacterList] = useRecoilState(characterListState)
+  const [allCharacterList, setAllCharacterList] = useRecoilState(allCharacterListState)
   const [characterValues, characterLoading, characterError] = useCollectionData(query(collection(db, 'characters')))
   useEffect(() => {
     if (characterError) {console.error(characterError)}
-    if (characterValues) {setCharacterList([...characterValues])}
+    if (characterValues) {
+      // console.log(characterValues)
+      setAllCharacterList([...characterValues])}
   }, [characterLoading])
 
   const addNewCharacter = async newCharacter => {
     const newCharacterId = await addToFirebase('characters', newCharacter)
-    setCharacterList(chars =>([...chars, { ...newCharacter, id: newCharacterId }]))
+    setAllCharacterList(chars =>([...chars, { ...newCharacter, id: newCharacterId }]))
   }
 
   const updateCharacter = character => {
@@ -27,10 +29,10 @@ export const useCharacterHook = () => {
   }
 
   return {
-    characterList,
+    allCharacterList,
     addNewCharacter,
     updateCharacter,
-    setCharacterList,
+    setAllCharacterList,
   }
 }
 

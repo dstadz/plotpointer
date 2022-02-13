@@ -7,15 +7,17 @@ import {
   AddCharForm
 } from 'Components/Forms/'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { elementsState, isEditingState } from 'utils/store'
-import { useStoryHook } from 'utils/hooks'
+import Emoji from './misc/Emoji'
+import { elementsState, isEditingState, allCharacterListState } from 'utils/store'
+import { useStoryHook,  useCharacterHook } from 'utils/hooks'
 
 const Sidebar = () => {
   // useStoryHook()
+  useCharacterHook()
+  const characters = useRecoilValue(allCharacterListState)
   const isEditing = useRecoilValue(isEditingState)
   const [isAddCharUp, setAddCharUp] = useState(false)
   const transform = useStoreState((store) => store.transform)
-
 return <SidebarWrapper id='sidebar'>
   <AddNodeForm />
 
@@ -23,7 +25,9 @@ return <SidebarWrapper id='sidebar'>
     ? <AddCharForm setAddCharUp={setAddCharUp}/>
     : <button onClick={()=> setAddCharUp(true)}> Add New Char </button>
   }
-
+  <div>
+  {characters.map(char => <Emoji key={char.name} e={char.emoji} />)}
+  </div>
   {isEditing && <EditNodeForm />}
 
   <div className="title">
