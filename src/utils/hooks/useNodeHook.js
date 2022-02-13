@@ -47,6 +47,6 @@ const node = {
   position: {x: 0, y: 0},
   data: {
     label: '',
-    characters: [{}]
+    characters: ['charId']
   },
 }

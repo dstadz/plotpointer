@@ -28,11 +28,14 @@ export const useCharacterHook = () => {
     updateFirebase('characters', character.id, character)
   }
 
+  const getCharById = (id) => allCharacterList.find(char => char.id === id)
+
   return {
     allCharacterList,
     addNewCharacter,
     updateCharacter,
     setAllCharacterList,
+    getCharById
   }
 }
 

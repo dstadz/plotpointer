@@ -29,7 +29,6 @@ const TimeLine = () => {
 
   const nodeTypes = {eventNode: EventNode,}
   const onLoad = ({setTransform}) => {
-    console.log({activeStory})
     setTransform({
       x: activeStory.x,
       y: activeStory.y,
