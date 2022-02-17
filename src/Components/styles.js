@@ -59,6 +59,7 @@ export const EventNodeWrapper = styled.div`
       }
     }
 
+
     .inner-content{
       padding: 0 10px;
       background: hsla(200,50%,80%,.9);
@@ -74,6 +75,7 @@ export const EventNodeWrapper = styled.div`
         margin: 0;
 
         li {
+          list-style-type: none;
         }
 
       }
