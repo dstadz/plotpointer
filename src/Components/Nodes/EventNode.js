@@ -17,9 +17,9 @@ export default memo(({ id, data}) => {
   useEffect(()=> {
     if (characters?.length > 0) {
       let charIds = []
-      for (const character of characters) {
-        console.log(character)
-        charIds.push(getCharById(character))
+      for (const charId of characters) {
+        // console.log(charId)
+        charIds.push(getCharById(charId))
       }
       setPresentCharList(charIds)
     }

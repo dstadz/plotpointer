@@ -41,7 +41,7 @@ export const AddNodeForm = () => {
         storyId: 'drazen05',
         type: 'eventNode',
         position: {
-          x: -1 * Math.floor(xPos) + 25,
+          x: Math.floor(xPos) + 25,
           y: Math.floor(yPos) + 25
         },
         data: {

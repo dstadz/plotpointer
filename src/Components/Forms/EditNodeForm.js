@@ -68,6 +68,7 @@ export const EditNodeForm = () => {
     }
     console.log(updatedNode)
     setElements((els) => els.map(el => {
+      el.id == activeNode.id && console.log(updatedNode, el)
       return el.id == activeNode.id ? updatedNode : el
     }))
     updateNode(updatedNode)

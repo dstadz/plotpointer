@@ -38,7 +38,7 @@ export const addToFirebase = async (
   content,
 ) => {
   try {
-    console.log('adding...', collectionId, content)
+    // console.log('adding...', collectionId, content)
     const dataToStore = {
       ...content,
       created: Timestamp.now(),

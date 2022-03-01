@@ -19,6 +19,8 @@ export const useCharacterHook = () => {
       setAllCharacterList([...characterValues])}
   }, [characterLoading])
 
+  const getCharById = (id) => allCharacterList.find(char => char.id === id)
+
   const addNewCharacter = async newCharacter => {
     const newCharacterId = await addToFirebase('characters', newCharacter)
     setAllCharacterList(chars =>([...chars, { ...newCharacter, id: newCharacterId }]))
@@ -27,8 +29,6 @@ export const useCharacterHook = () => {
   const updateCharacter = character => {
     updateFirebase('characters', character.id, character)
   }
-
-  const getCharById = (id) => allCharacterList.find(char => char.id === id)
 
   return {
     allCharacterList,

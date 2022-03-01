@@ -21,9 +21,13 @@ const TimeLine = () => {
     if (nodeValues && edgeValues) {setElements([...nodeValues, ...edgeValues])}
   }, [nodeLoading, edgeLoading])
 
-  const { updateNode, onConnect } = useNodeHook()
+  const {
+    updateNode,
+    onConnect,
+    addNextEventNode,
+  } = useNodeHook()
   const onNodeDragStop = (_, node) => { updateNode(node) }
-  const onNodeDoubleClickHandler = (_, node) => { console.log(node) }
+  const onNodeDoubleClickHandler = (_, node) => { addNextEventNode(node) }
   const onElementClickHandler = (_, element) => { setActiveNode(element) }
   const onEdgeContextMenuHanlder = (_, element) => { console.log(element) }
 

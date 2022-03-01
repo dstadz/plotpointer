@@ -1,10 +1,15 @@
 import {useState, useEffect, useRef } from 'react'
 import Emoji from 'Components/misc/Emoji';
 import { useCharacterHook } from 'utils/hooks'
+import { ActiveStoryState } from 'utils/store'
+import { useRecoilValue } from 'recoil'
+
 import { AddCharFormWrapper } from '../styles';
 import Picker from 'emoji-picker-react';
 
 export const AddCharForm = ({ setAddCharUp }) => {
+  const activeStory = useRecoilValue(ActiveStoryState)
+
   const [newCharName, setNewCharName] = useState('')
   const [isPickerUp, setPickerUp] = useState(false)
   const { addNewCharacter } = useCharacterHook()
@@ -21,7 +26,7 @@ export const AddCharForm = ({ setAddCharUp }) => {
   const handleNewCharSubmit = async (e) => {
     e.preventDefault()
       const newCharacter = {
-        storyId: 'drazen05',
+        storyId: activeStory.id,
         name: newCharName,
         emoji: chosenEmoji?.emoji,
         desccription: '',

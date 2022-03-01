@@ -7,12 +7,12 @@ import { ReactFlowProvider } from 'react-flow-renderer'
 
 const App = () => {
 
-return <AppWrapper id="app">
-  <ReactFlowProvider>
+return <ReactFlowProvider>
+  <AppWrapper id="app">
     <Sidebar />
     <TimeLine />
-  </ReactFlowProvider>
-</AppWrapper>
+  </AppWrapper>
+</ReactFlowProvider>
 }
 
 export default App;

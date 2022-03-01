@@ -11,6 +11,7 @@ export const SidebarWrapper = styled.aside`
 
   @media (max-width:500px) {
     height: 25vh;
+    width: unset;
   }
 `
 
@@ -22,6 +23,8 @@ export const TimeLineWrapper = styled.section`
 
   @media (max-width:500px) {
     height: 70vh;
+    width: unset;
+
   }
   ${'' /* height: calc(100% - 2px); */}
 `
