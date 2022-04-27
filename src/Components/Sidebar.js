@@ -19,7 +19,7 @@ const Sidebar = () => {
   const [isAddCharUp, setAddCharUp] = useState(false)
   const transform = useStoreState((store) => store.transform)
 return <SidebarWrapper id='sidebar'>
-  <AddNodeForm />
+  {/* <AddNodeForm /> */}
 
   {isAddCharUp
     ? <AddCharForm setAddCharUp={setAddCharUp}/>

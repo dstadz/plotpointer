@@ -9,8 +9,9 @@ import { useCharacterHook } from '../../utils/hooks/useCharacterHook';
 
 export const EditNodeForm = () => {
   const editFormRef = useRef()
-  const { updateNode } = useNodeHook()
+  const { updateNode } = useNodeHook('EditNodeForm')
   const { allCharacterList } = useCharacterHook()
+  const [availableCharList, setAvailableCharList] = useState(allCharacterList)
   const [editValue, setEditValue] = useState('')
   const activeNode = useRecoilValue(ActiveNodeState)
   const [activeChars, setActiveChars] = useState([])
@@ -21,23 +22,18 @@ export const EditNodeForm = () => {
   const poChars = []
 
   useEffect(() => {
+    console.dir(activeNode)
     if (isEditing) setEditValue(activeNode.data?.label || '' )
     const prevNodes = getIncomers(activeNode, elements)
-    for (let char of allCharacterList) {
-      const { name } = char
-    //  setCharSelectedList (csList => {
-    //     const newList = ({...csList, [name]: activeNode.data.characters.includes(name)})
-    //     return newList
-    //   })
-    }
-    // for (const node of prevNodes) {
-    //   console.log(node?.data?.characters)
-    //   poChars.push(...node.data.characters)
-    // }
-    // setCharSelectedList(poChars)
+
 
 
   },[isEditing, activeNode])
+
+  useEffect(() => {
+    console.log(activeChars, availableCharList)
+    setAvailableCharList(allCharacterList.filter(char => !activeChars.includes(char)))
+  },[activeChars])
 
 
   const handleEditChange = (e) => {
@@ -68,7 +64,6 @@ export const EditNodeForm = () => {
     }
     console.log(updatedNode)
     setElements((els) => els.map(el => {
-      el.id == activeNode.id && console.log(updatedNode, el)
       return el.id == activeNode.id ? updatedNode : el
     }))
     updateNode(updatedNode)
@@ -100,7 +95,7 @@ return <EditNodeFormWrapper>
 
   <p> Add New Character </p>
   <ul>
-    {allCharacterList.map(char=> <CharSlot
+    {availableCharList.map(char=> <CharSlot
       key={char.id}
       character={char}
       handler={(e)=>{handleCharListChange(e,char, true)}}

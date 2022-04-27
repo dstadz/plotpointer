@@ -6,9 +6,9 @@ import { useSetRecoilState } from 'recoil'
 import { ActiveNodeState, elementsState, isEditingState } from 'utils/store'
 import { useCharacterHook, useNodeHook } from 'utils/hooks'
 
-export default memo(({ id, data}) => {
+export default memo(({ id, data, ...props}) => {
   const { label, characters } = data
-  const {updateNode} = useNodeHook()
+  // const {updateNode} = useNodeHook('event node')
   // if (characters?.length > 0) console.log(characters)
   const { getCharById } = useCharacterHook()
   const setEditing = useSetRecoilState(isEditingState)
@@ -21,6 +21,7 @@ export default memo(({ id, data}) => {
         // console.log(charId)
         charIds.push(getCharById(charId))
       }
+      console.log(charIds, label, props)
       setPresentCharList(charIds)
     }
   },[])
@@ -44,10 +45,12 @@ return <EventNodeWrapper>
     </div>
 
     <ul>
-      {presentCharList?.map((char) => <li key={char.id}>
-        <Emoji e={char.emoji}/>
-        <span> {char.name}</span>
-      </li>)}
+      {presentCharList?.map((char) => {
+
+        return <li key={char?.id}>
+        <Emoji e={char?.emoji}/>
+        <span> {char?.name}</span>
+      </li>})}
     </ul>
 
   </div>

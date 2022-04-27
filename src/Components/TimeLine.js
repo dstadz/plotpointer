@@ -25,7 +25,7 @@ const TimeLine = () => {
     updateNode,
     onConnect,
     addNextEventNode,
-  } = useNodeHook()
+  } = useNodeHook('timeline')
   const onNodeDragStop = (_, node) => { updateNode(node) }
   const onNodeDoubleClickHandler = (_, node) => { addNextEventNode(node) }
   const onElementClickHandler = (_, element) => { setActiveNode(element) }

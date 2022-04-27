@@ -1,20 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { addEdge } from 'react-flow-renderer'
 import { collection, query } from "firebase/firestore"
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { ActiveStoryState, elementsState } from 'utils/store'
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
+import {
+  elementsState,
+  isEditingState,
+  ActiveNodeState,
+  ActiveStoryState,
+} from 'utils/store'
 import { db, addToFirebase, updateFirebase } from 'utils/firebase'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
-export const useNodeHook = () => {
+export const useNodeHook = (callLocation) => {
+  const hasLoadedYet = useRef(false)
   const activeStory = useRecoilValue(ActiveStoryState)
+  const setEditing = useSetRecoilState(isEditingState)
+  const setActiveNode = useSetRecoilState(ActiveNodeState)
   const [elements, setElements] = useRecoilState(elementsState)
   const [nodeValues, nodeLoading, nodeError] = useCollectionData(query(collection(db, 'nodes')))
   const [edgeValues, edgeLoading, edgeError] = useCollectionData(query(collection(db, 'edges')))
   useEffect(() => {
     if (nodeError || edgeError) {console.error(nodeError, edgeError)}
-    if (nodeValues && edgeValues) {setElements([...nodeValues, ...edgeValues])}
+    if (nodeValues && edgeValues) {
+      hasLoadedYet.current = true
+      setElements([...nodeValues, ...edgeValues])
+    }
   }, [nodeLoading, edgeLoading])
+
+
+  useEffect(() => {
+
+    callLocation=="timeline" &&
+    hasLoadedYet &&
+    console.log(callLocation,elements)
+  },[elements])
+
+
 
   const getNodeById = (id) => elements.find(node => node.id === id)
 
@@ -27,9 +52,7 @@ export const useNodeHook = () => {
   }
 
   const addNextEventNode = async prevNode => {
-    const { characters , position: {x, y} } = prevNode
-    console.log('addNextEventNode', characters, x, y)
-    console.log(activeStory, prevNode)
+    const { data:{characters} , position: {x, y} } = prevNode
     const nextEvent = {
       storyId: activeStory.id,
       type: 'eventNode',
@@ -42,21 +65,23 @@ export const useNodeHook = () => {
         characters: characters || [],
       }
     }
-    console.log('addNextEventNode', nextEvent)
     // const nextNodeId =
     addNewNode(nextEvent)
-    .then(res => {console.log(res)
-
-
-
+    .then(newNodeId => {
       const edgeParams = {
         source: prevNode.id,
         sourceHandle: null,
-        target: res,
+        target: newNodeId,
         targetHandle: null
       }
       onConnect(edgeParams)
+
+      //focus new node and open edit node form
+      setEditing(true)
+      setActiveNode(getNodeById(newNodeId))
+
     })
+    .catch(err => console.error(err))
   }
 
   const updateNode = node => { updateFirebase('nodes', node.id, node) }

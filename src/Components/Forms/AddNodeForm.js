@@ -16,7 +16,7 @@ export const AddNodeForm = () => {
   const [AddValue, setAddValue] = useState('')
   const [newChar, setNewChar] = useState('')
   const [newCharList, setNewCharList] = useState([])
-  const { addNewNode } = useNodeHook()
+  const { addNewNode } = useNodeHook('addNodeForm')
   const [xPos, yPos] = useStoreState((store) => store.transform);
 
 
@@ -41,7 +41,7 @@ export const AddNodeForm = () => {
         storyId: 'drazen05',
         type: 'eventNode',
         position: {
-          x: Math.floor(xPos) + 25,
+          x: -Math.floor(xPos) + 25,
           y: Math.floor(yPos) + 25
         },
         data: {
